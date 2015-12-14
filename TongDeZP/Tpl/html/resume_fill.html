@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>浙江省立同德医院招聘系统</title>
+<meta content="initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes, width=device-width" name="viewport">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<link rel='stylesheet' href='__CSS__/bootstrap.min.css'/>
+<include file='Tpl/html/common/common_css_js.html'/>
+<script type='text/javascript' src='__JS__/resume_option.js' async='async'></script>
+<script type='text/javascript' src='__JS__/ajaxfileupload.js' async='async'></script>
+<script type='text/javascript' src='__JS__/resumeData.js'></script>
+<script type='text/javascript' src='__JS__/calendar.js'></script>
+<script type='text/javascript' src='__JS__/resume_util.js'></script>
+<script type='text/javascript' src='__JS__/resume_popupdiv.js'></script>
+<script type='text/javascript' src='__JS__/resume_date.js'></script>
+<script type='text/javascript' src='__JS__/resume_radio.js'></script>
+<script type='text/javascript' src='__JS__/dataGen.js'></script>
+<script type='text/javascript' src='__JS__/fnUtil.js'></script>
+<script type='text/javascript' src='__JS__/ym_calendar.js'></script>
+<script type='text/javascript' src='__JS__/formValidate.js' async='async'></script>
+<script type='text/javascript' src='__JS__/resumeValidate.js' async='async'></script>
+<script type='text/javascript' src='__JS__/jsAddress.js'></script>
+<link rel='stylesheet' href='__CSS__/resume_popupdiv.css'/>
+<link rel='stylesheet' href='__CSS__/resume_date.css'/>
+<link rel='stylesheet' href='__CSS__/base.css'/>
+<style>
+	*{
+		box-sizing: content-box;
+	}
+</style>
+</head>
+<body>
+<include file='Tpl/html/common/header.html'/>
+	<div id='container'>
+		<div id='mainContent'>
+		<div id='reg'>
+			<form name='resumeForm'>
+			<h1 class="float-left">个人简历</h1>
+			<div class="f_right"><span id="error1"></span>（<span>*</span>为必填项,填写完毕后请保存）</div> 
+			<div class="clearfloat"></div><br>
+			<div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>应聘岗位(必填)</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>
+			 		<table id="zpinfo" class="table1" cellpadding="0" cellspacing="0">
+			 			<tr><th><span>*</span>应聘岗位代码：</th><td><select id='depart' name='depart_code' ></select></td><th><span>*</span>部门或岗位：</th><td><input id='depart_code' name='depart_name' value='{$position.depart_code}' type='text' disabled></select></td></tr>
+			 		</table><div class="rank"><input id="save_b" name="save" value="保存" class="submit" onclick="saveResume('zpinfo');return false;" type="submit"></div>
+			 	</div>
+			 </div>
+			<div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>个人信息(必填，简历中所有内容若无，不可留白，请填写“无”)</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>
+			 		<table id="binfo" class="table1" cellpadding="0" cellspacing="0">
+				<tbody>
+					<tr>
+						<th><span>*</span><font id="Lusername">姓名</font></th>
+						<td><input value="{$userMessage.name}" name="name" class="frame7" id="username" mzpmodule="resumeChEnFac" tiptext="" lang="en" type="text"></td>
+						<th><span>*</span><font id="Lgender">性别</font></th>
+						<td><input  name="gender" value="1" type="radio"> 男 <input name="gender" value="2" type="radio"> 女 </td>
+					</tr>
+					<tr id="conError_username" class="dnone">
+						<td></td><td colspan="3"><span id="txtError_username"></span></td>
+					</tr>
+				<tr><th><span>*</span><font id="Lbrithday">出生日期</font></th><td ><input value="<if condition='$userMessage.birth_date neq null'>{$userMessage.birth_date}<else/>选择/修改</if>" id="brithButton" name="birth_date" class="selectBut2" onclick="calendar.show(this);" type="button"></td><th><span>*</span><font id="LexpeButton">参加工作年份</font></th>
+					<td>
+					 	<input id="expeButton" name="work_ym" class="selectBut2 dateButton" value="<if condition='is_null($userMessage["work_ym"])'>选择/修改<else/><if condition='$userMessage.work_ym eq "无工作经验"'>{$userMessage.work_ym}<else/>{$userMessage.work_ym|date='Y年m月',###}</if></if>" title="选择/修改" onfocus="this.blur()" mzpmodule="workExpYearFac" 
+					 		datay="@0|无工作经验@1985|1985或更早@1986|1986@1987|1987@1988|1988@1989|1989@1990|1990@1991|1991@1992|1992@1993|1993@1994|1994@1995|1995@1996|1996@1997|1997@1998|1998@1999|1999@2000|2000@2001|2001@2002|2002@2003|2003@2004|2004@2005|2005@2006|2006@2007|2007@2008|2008@2009|2009@2010|2010@2011|2011@2012|2012@2013|2013@" year="document.getElementsByName('experience')[0]" month="document.getElementsByName('experience_month')[0]" lang="cn" type="button">
+					 	<input value="0" name="experience" id="e1" type="hidden">
+						<input value="1" name="experience_month" id="e2" type="hidden">
+					</td>
+				</tr>
+				<tr>
+					<th style='text-indent: 1.2em;'>籍贯</th><td><select name='province' id='province'></select><select name='city' id='city'></select><select name='country' id='country'></select></td>
+					<th style='text-indent: 1.2em;'><font id="Lmarital">婚姻状况</font></th><td><input name="marital_status" value="1" type="radio" > 未婚 <input name="marital_status" value="2" type="radio"> 已婚 </td>
+				</tr>
+				<tr id="conError_experience" class="dnone"><td></td><td colspan="3"><span id="txtError_experience"></span></td></tr>
+				<tr>
+					<th style='text-indent: 1.2em;'><font id="mz">民族</font></th><td><select name="nation" id="nation" ></select></td>
+					<th><span>*</span><font id="Lid_type">学历</font></th><td><select name='education' id='education'><option value="请选择">请选择</option><option value="11">博士</option><option value="12">硕士</option><option value="13">本科</option><option value="14">大专</option><option value="15">中专</option>
+				</select></td>
+					<!-- <th><span>*</span><font id="LnationalityF_button">国家或地区</font></th><td><input id="nationalityF_button" class="selectBut2" value="选择/修改" title="选择/修改" onfocus="this.blur()" type="button"><div id="n"><input name="country" value="" type="hidden"></div></td> --></tr>
+				<tr><td></td><td></td><td></td><td><span id="txtError_nationality"></span></td></tr>
+				
+				<tr><th><span>*</span>证件类型</th><td><select name='card_type' id='card_type'><option value='1'>身份证</option><option value='2'>军官证</option>
+				<option value='3'>台胞证</option></select></td>
+				<th><span>*</span><font id="Lid_number">证件号码</font></th><td><input value="{$userMessage.card_no}" id='card_no' name="card_no" class="frame7" type="text"></td>
+					</tr>
+				<tr><th></th><td><span id="conError_id_type" class="dnone"><span id="txtError_id_type"></span></span></td><td></td><td><span id="conError_id_number" class="dnone"><span id="txtError_id_number"></span></span></td></tr>
+				
+				<tr><th style='text-indent: 1.2em;'>海外工作/学习经历</th><td ><input name="oversea" value="1" onclick="overseasTime(true)" type="radio"> 有 <input name="oversea" value="0" onclick="overseasTime(false)" type="radio"> 无</td>
+					<th style='text-indent: 1.2em;'> 英语等级</th><td><select name='english_level' id='english_level'><option value='0'>请选择</option><option value='1'>CET-4</option><option value='2'>CET-6</option><option value='3'>CET-3</option><option value='-1'>其他</option></td></tr>
+				<tr><th style='text-indent: 1.2em;'>政治面貌</th><td ><select name='politics_status' id='politics_status'><option value='0'>请选择</option><option value="1">中共党员</option><option value="4">民主党派</option><option value="2">中共预备党员</option><option value="3">共青团员</option><option value="13">群众</option><option value="12">无党派人士</option></select></td>
+				<th style='text-indent: 1.2em;'>计算机水平</th>
+				<td ><select name='compute_level' id='compute_level'><option value='0'>请选择</option><option value='1'>一级</option><option value='2'>二级</option>
+				<option value='3'>三级</option><option value='4'>四级</option><option value='-1'>其他</option></select></td>
+				</tr>				
+				<tr><th><span>*</span><font id="Lid_type">应届毕业生</font></th><td><input name="current" value="1" type="radio" > 是 <input name="current" value="2" type="radio"> 否 </td></tr>
+				<tr><th><span>*</span><font id="Lemail">电子邮箱</font></th><td><input id="email" name="email" value="{$userMessage.email}" disabled="disabled" class="frame7" type="text"></td><th><span>*</span>住院医师规范化培训状态</th><td><select name='train_status' id='train_status'><option value='请选择'>请选择</option>
+				<option value='1'>无需规培</option><option value='2'>已通过规培</option>
+				<option value='3'>毕业时结束规培</option><option value='4'>需要规培</option>
+				</select></td></tr>
+				
+				<tr><th><span>*</span>首选联系方式</th><td><input value="{$userMessage.link1}" name="link1" id="contact_num0" class="frame6" type="text"></td><th style='text-indent:1.2em'>备用联系方式</th><td><input value="{$userMessage.link2}" name="link2" id="contact_num2" class="frame6" type="text"></td></tr>
+				
+				<tr id="conError_contact0" class="dnone"><td></td><td colspan="3"><span id="txtError_contact0"></span></td></tr>
+				<tr><th><span>*</span><font id="Lid_number">现工作学习单位</font></th><td colspan='3'><input value="{$userMessage.study_or_work}" size='59' lang='en' name="study_or_work" class="frame7" type="text"></td></tr>
+				<tr><th> <span>*</span> 通讯地址</th><td colspan='3'><input value="{$userMessage.address}" name="address" size='59' id="address" mzpmodule="resumeChEnFac" tiptext="" lang="en" type="text"></td></tr>
+				<tr id="conError_emailmessage" class="dnone"><td></td><td colspan="3"><font id="message"></font></td></tr>
+				
+				</tbody></table><div class="rank"><input id="save_b" name="save" value="保存" class="submit" onclick="saveResume('binfo');return false;" type="button"></div>
+			 	</div>
+			 </div>
+			<div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>个人照片上传（必需,打印准考证用）</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>
+			 		<div style='text-indent:2em;'>您可以在此上传您的照片，将它转成图形格式（建议使用jpg格式的照片），大小请不要超过2M，建议您使用110*140的照片。</div>
+				<table width='100%'>
+					<colgroup><col width="110"><col></colgroup>
+					<empty name='userMessage.self_photo'><tr><th >照片名称</th><td>
+						<input type="file" style='border:1px solid #ccc;' id="self_photo" name="self_photo" />
+					</td></tr>
+					<tr><td colspan='2' align='center'><div class="rank"><input id="save_r" name="save" value="保存并预览图片" class="submit" type='button' onclick='ajaxFileUpload();'></div></td></tr>
+					<else/><tr><td  align='center'><img src='../../{$userMessage.self_photo}' width='110' height='140'></tr>
+					 <tr><td><div class="rank"><input id="save_r" name="save" value="删除照片" class="submit" type='button' onclick='delSelfImg()'></div></td></tr>
+					 </empty>
+				</table>
+				<br>
+			 	</div>
+			 </div>
+			<div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>教育信息(必填，请从大学开始填写,请务必填写完整)</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>
+				<table id="edu" class="table1 duibi" cellspacing="0"></table>
+				<table id="einfo" class="table1" cellpadding="0" cellspacing="0">
+					<tbody><tr><th><span>*</span><font id="rq">时间</font></th><td colspan='5'><input value="" name="esdate_y" data="1976|1977|1978|1979|1980|1981|1982|1983|1984|1985|1986|1987|1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015" maxlength="4" class="w4 dateButton" type="text"> 年 <input name="esdate_m" data="1|2|3|4|5|6|7|8|9|10|11|12" value="" maxlength="2" class="w4" type="text"> 月 至 <input value="" name="eedate_y" data="1976|1977|1978|1979|1980|1981|1982|1983|1984|1985|1986|1987|1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015" maxlength="4" class="w4 dateButton" type="text"> 年 <input value="" name="eedate_m" data="1|2|3|4|5|6|7|8|9|10|11|12" maxlength="2" class="w4" type="text"> 月</td></tr>
+					<tr><td></td><td><span id="txtError_start_date_y" style="margin-right:16px;display:none;"></span><span id="txtError_start_date_m" style="margin-right:16px;display:none;"></span><span id="txtError_end_date_y" style="margin-right:16px;display:none;"></span><span id="txtError_end_date_m" class="dnone"></span></td><td></td><td></td></tr>
+					<tr><th><span>*</span><font id="xl">学历</font></th><td><select name="education" id="education" class="w12">
+						<option value="请选择">请选择</option>
+						<option value="11">博士</option>
+						<option value="12">硕士</option>
+						<option value="13">本科</option>
+						<option value="14">大专</option>
+						<option value="15">中专</option>
+					</select></td>
+					<th><span>*</span><font id="xl">学位</font></th><td><select name="degree" id="degreee" class="w12">
+						<option value="-1">无</option>
+						<option value="1">学士</option>
+						<option value="2">硕士</option>
+						<option value="3">博士</option>
+					</select></td>
+					<th><span>*</span><font id="xl">培养方式</font></th><td><select name="train" id="train" class="w12">
+						<option value="1">全日制</option>
+						<option value="2">成教</option>
+						<option value="3">自考</option>
+						<option value="4">远程</option>
+						<option value="5">在职</option>
+					</select></td>
+					</tr>
+					<tr><th><span>*</span><font id="xx">学校</font></th><td colspan='5'><input name='school' id='school' type='text' value='{$userMessage.school}' size='59'></td></tr>
+					<tr><th><span>*</span><font id="">专业</font></th><td colspan="5"><input value="" id="major" name='major' size="25" type="text"></td></tr>
+					</tbody>
+				</table>
+				<!-- <input name="source" type="hidden"><input name="source_p" type="hidden"><script type="text/javascript">var sourceF = new MYRESUME.hukou('sourceF', arrCity, document.aspnetForm.source, null, 'fnPassValue2');sourceF.config = { width: 730, title: '生源地', col: 5, buttonL: 20, linkfn: 'source_dCity' };sourceF.showTextOnButton();</script> -->
+				<div class="rank"><input id="save_e" name="save" value="保存" class="submit" onclick="saveResume('einfo');return false;" type="submit"></div>
+			 	</div>
+			</div>
+				
+			<div class='test-part' id='workExp'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>工作经历(选填，非应届毕业生填写)</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>
+			 		<table id="job" class="table1 duibi" cellspacing="0"></table>
+				<table id="jinfo" class="table1" cellpadding="0" cellspacing="0">
+				<tbody><tr><th><span>*</span>工作时间</th><td><input value="" name="wsdate_y" data="1976|1977|1978|1979|1980|1981|1982|1983|1984|1985|1986|1987|1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015" maxlength="4" class="w4 dateButton" type="text"> 年 <input value="" name="wsdate_m" data="1|2|3|4|5|6|7|8|9|10|11|12" maxlength="2" class="w4" type="text"> 月 至 <input value="" name="wedate_y" data="1976|1977|1978|1979|1980|1981|1982|1983|1984|1985|1986|1987|1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015" maxlength="4" class="w4 dateButton"  type="text"> 年 <input value="" name="wedate_m" data="1|2|3|4|5|6|7|8|9|10|11|12" maxlength="2" class="w4" type="text"> 月</td></tr>
+				<tr><td></td><td><span id="txtError_workstart_date_y" style="margin-right:16px;display:none;"></span><span id="txtError_workstart_date_m" style="margin-right:16px;display:none;"></span><span id="txtError_workend_date_y" style="margin-right:16px;display:none;"></span><span id="txtError_workend_date_m" style="display:none; "></span></td></tr>
+				<tr><th><span>*</span>单位名称</th><td><input value="" name="unitname" size="59" id="unitname" mzpmodule="resumeChEnFac" tiptext="" lang="en" type="text"></td></tr>
+				<tr id="conError_unitname" class="dnone"><td></td><td><span id="txtError_unitname"></span></td></tr>
+				<tr><th><span>*</span>所在科室及从事专业</th><td><input name="workon" value="" size="59" id="workon" mzpmodule="resumeChEnFac" tiptext="" lang="en" type="text"></td></tr>
+				<tr><th ><span>*</span>职称</th><td><select name='jobtitle' id='jobtitle'></select></td></tr>
+				<tr><th style='text-indent:1.1em;'>职务</th><td><input value="" id="job" name='job' size="59" type="text"> </td></tr>			
+				</tbody></table><div class="rank"><input id="save_j" name="save" value="保存" class="submit" onclick="saveResume('jinfo');return false;" type="button"></div>
+			 	</div>
+			 </div>	
+			<div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>实习情况及社会服务（选填，应届毕业生填写）</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>	
+			 		<table id="practice" class="table1 duibi" cellspacing="0"></table>
+				<table id="iinfo" class="table1" cellpadding="0" cellspacing="0">
+				<tbody><tr><th style='text-indent: 1.2em;'>实习/服务单位</th><td><input value="" id='practice_unit' name='practice_unit' size="20" type="text"></td><th style='text-indent: 1.2em;'>实习/服务岗位</th><td><input id='practice_position' name='practice_position' value="" size="20" type="text"></td></tr>
+				<tr><th style='text-indent: 1.2em;'>实习/服务日期</th><td colspan="3"><input value="" name="isdate_y" data="1980|1981|1982|1983|1984|1985|1986|1987|1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015" maxlength="4" class="w4 dateButton" type="text"> 年 <input value="" name="isdate_m" data="1|2|3|4|5|6|7|8|9|10|11|12" maxlength="2" class="w4" type="text"> 月 至 <input value="" name="iedate_y" data="1980|1981|1982|1983|1984|1985|1986|1987|1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015" maxlength="4" class="w4 dateButton" type="text"> 年 <input value="" name="iedate_m" data="1|2|3|4|5|6|7|8|9|10|11|12" maxlength="2" class="w4" type="text"> 月</td></tr>
+				</tbody></table>
+				<div class="rank"><input id="save_i" name="save" value="保存" class="submit" onclick="saveResume('iinfo');return false;" type="button"></div>
+			 	</div>
+			 </div>
+			 <div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>机构、协会兼职情况（选填，非应届毕业生填写）</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>					
+				<table id="parttime_job" class="table1 duibi" cellspacing="0"></table>
+				<table id="plinfo" class="table1" cellpadding="0" cellspacing="0">
+				<tbody><tr><th style='text-indent: 1.2em;'>起止时间</th><td colspan="3"><input value="" name="psdate_y" data="1980|1981|1982|1983|1984|1985|1986|1987|1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015" maxlength="4" class="w4 dateButton" type="text"> 年 <input value="" name="psdate_m" data="1|2|3|4|5|6|7|8|9|10|11|12" maxlength="2" class="w4" type="text"> 月 至 <input value="" name="pedate_y" data="2015" maxlength="4" class="w4 dateButton" type="text"> 年 <input value="" name="pedate_m" data="1|2|3|4|5|6|7|8|9|10|11|12" maxlength="2" class="w4" type="text"> 月</td></tr>
+				<tr><th style='text-indent: 1.2em;'>单位</th><td><input  name='unitname' id ='unit' value="" size="20" type="text"></td><th style='text-indent: 1.2em;'>职务</th><td><input value="" name='position' id='position' size="20" type="text"></td></tr>
+				</tbody></table>
+				<div class="rank"><input id="save_pl" name="save" value="保存" class="submit" onclick="saveResume('plinfo');return false;" type="button"></div>
+				</div>
+			</div>
+			<div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>语言能力（选填）</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>		
+				<table id="language" class="table1 duibi" cellspacing="0"></table>
+				<table id="linfo" class="table1" cellpadding="0" cellspacing="0">
+				<tbody><tr><th style='text-indent: 1.2em;'>外语语种</th><td><select name="language" id='language'><option value="0">请选择</option><option value="2">英语</option><option value="3">日语</option><option value="4">法语</option><option value="5">德语</option><option value="6">俄语</option><option value="7">韩语</option><option value="8">西班牙语</option><option value="9">葡萄牙语</option><option value="10">阿拉伯语</option><option value="11">意大利语</option></select></td>
+				<th style='text-indent: 1.2em;'>读写能力</th><td><select name="read_write" id='read_write'><option value="0">请选择</option><option value="1">一般</option><option value="2">良好</option><option value="3">熟练</option><option value="4">精通</option></select></td>
+				<th style='text-indent: 1.2em;'>听说能力</th><td><select name="spoken" id='spoken'><option value="0">请选择</option><option value="1">一般</option><option value="2">良好</option><option value="3">熟练</option><option value="4">精通</option></select></td></tr></tbody></table>
+				<div class="rank"><input id="save_l" name="save" value="保存" class="submit" onclick="saveResume('linfo');return false;" type="button"></div>
+				</div>
+			</div>
+			<div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>证书（选填，执业、学历、学位）</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>	
+				<table id="certificate" class="table1 duibi" cellspacing="0"></table>
+				<table id="cinfo" class="table1" cellpadding="0" cellspacing="0">
+				<tbody><tr><th style='text-indent: 1.2em;'>证书类别</th><td><select id="cetype" name='cetype'><option value="0">请选择</option><option value="1">外语证书</option><option value="6">学位证书</option><option value="7">资格证书</option><option value="8">执业证书</option><option value="9">其他证书</option></select></td>
+				<th style='text-indent: 1.2em;'>证书名称</th><td><input value="" id='cename' name='cename' size="25" id="cen" mzpmodule="resumeChEnFac" tiptext="" lang="en" type="text"></td></tr>
+				<tr><th style='text-indent: 1.2em;'>证书编号</th><td><input value="" id='cecode' name='cecode' size="25" mzpmodule="resumeChEnFac" tiptext="" lang="en" type="text"></td></tr>
+				</tbody></table>
+				<div class="rank"><input id="save_c" name="save" value="保存" class="submit" onclick="saveResume('cinfo');return false;" type="button"></div>
+			</div>
+			<div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>论文（选填）</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>	
+				<table id="paper" class="table1 duibi" cellspacing="0"></table>
+				<table id="pinfo" class="table1" cellpadding="0" cellspacing="0">
+				<tbody><tr><th style='text-indent: 1.2em;'>论文题目</th><td><input name='paper_title' id='paper_title' value="" size="20" type="text"></td><th style='text-indent: 1.2em;'>发表刊物</th><td><input name='journal' id='journal' value="" size="20" type="text"></td></tr>
+				
+				<tr><th style='text-indent: 1.2em;'>发表日期</th>
+					<td>
+						<input value="" name="public_y" data="1980|1981|1982|1983|1984|1985|1986|1987|1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015" maxlength="4" class="w4 dateButton" type="text"> 年 
+						<input value="" name="public_m" data="1|2|3|4|5|6|7|8|9|10|11|12" maxlength="2" class="w4" type="text"> 月</td>
+					<th style='text-indent:1.2em'>影响因子</th>
+					<td>
+						<input name='factor' id='factor' value="" size="20" type="text">
+					</td>
+				</tr>
+				<tr><th style='text-indent:1.5em'>备注</th><td colspan='3'><textarea value="" class="n" name="paper_remark" id='paper_remark' rows="3" cols="50" mzpmodule="resumeChEnFac" tiptext="" lang="en"></textarea></td></tr>
+				</tbody></table>
+				<div class="rank"><input id="save_p" name="save" value="保存" class="submit" onclick="saveResume('pinfo');return false;" type="button"></div>
+				</div>
+			</div>
+			<div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>课题（选填）</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>	
+			 		<table id="task" class="table1 duibi" cellspacing="0"></table>
+					<table id="tinfo" class="table1" cellpadding="0" cellspacing="0">
+						<tbody>
+							<tr><th style='text-indent: 1.2em;'>项目名称</th><td colspan='3'><input value="" name='task_name' id='task_name' size="59" type="text"></td></tr>
+							<tr><th style='text-indent: 1.2em;'>立项机构</th><td colspan='3'><input name='org' name='org' value="" size="59" type="text"></td></tr>
+							<tr><th style='text-indent: 1.2em;'>立项日期</th><td ><input value="" name='pro_date' id='pro_date' size="20" type="button" onclick="calendar.show(this);" class='selectBut2'></td><th style='text-indent: 1.2em;'>排名</th><td><input name='ranking' name='ranking' value="" size="20" type="text"></td></tr>
+						</tbody>
+					</table>
+					<div class="rank"><input id="save_c" name="save" value="保存" class="submit" onclick="saveResume('tinfo');return false;" type="button"></div>
+			 	</div>
+			 </div>
+			<div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'>奖励（选填）</div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>	
+				<table id="rewards" class="table1 duibi" cellspacing="0"></table>
+				<table id="rinfo" class="table1" cellpadding="0" cellspacing="0">
+				<tbody><tr><th style='text-indent: 1.2em;'>奖励名称</th><td><input value="" name='rewards_name' id='rewards_name' size="20" type="text"></td><th><span>*</span>授奖单位</th><td><input name='rewards_unit' name='rewards_unit' value="" size="20" type="text"></td></tr>
+				<tr><th style='text-indent: 1.2em;'>获奖日期</th><td><input  id='rewards_y' value="" name="rewards_y" data="1980|1981|1982|1983|1984|1985|1986|1987|1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015" maxlength="4" class="w4 dateButton" type="text"> 年 <input value="" name="rewards_m" data="1|2|3|4|5|6|7|8|9|10|11|12" maxlength="2" class="w4" type="text"> 月</td></tr></tbody></table>
+				<div class="rank"><input id="save_r" name="save" value="保存" class="submit" onclick="saveResume('rinfo');return false;" type="button"></div>
+				</div>
+			</div>
+			<div class='test-part'>
+			 	<div class='part-title'>
+			 		<div class='part-main'><span id='attach_content'>附件上传</span></div>
+			 		<a class='part-switch'><font>收起</font><i></i></a>
+			 	</div>
+			 	<div class='part-area'>	
+				<table id="accessory" class="table1 duibi" cellspacing="0"></table>
+				<div style='text-indent:2em;'>1. 非应届毕业生必须提供最高学历学位证书扫描件，附加提供职称证书、资格证书及学信网电子学历注册备案表，大小请不要超过2M。
+				2.应届毕业生请提供毕业生就业推荐表</div>
+				<table id='acinfo' class='table1' width='100%'>
+					<colgroup><col width="110"><col></colgroup>
+					<tr><th><span>*</span>附件名称</th><td><input style='border:1px solid #ccc;' type='file' name='imgFile' id='imgFile'></td></tr>
+					<tr><th><span>*</span>附件描述</th><td><input name='description'  id='description' size='70' ></input></td></tr>
+					<tr><td colspan='2' align='center'><div class="rank"><input id="save_r" name="save" value="保存" class="submit" type='button' onclick='ajaxFileUpload2();'></div></td></tr>
+				</table>
+				</div>
+			</div>
+				<div class="rank"><input id="ps" type="checkbox"> 本人承诺，简历中所填信息均真实无误，并能提供相关佐证材料。</div>
+				<br><if condition='($userMessage.status eq 0) or ($userMessage.status eq 5)'><a class="btn5"  onclick='submitResume()'>提交简历</a><else /><a class="btn5"  id='submited'>简历已提交</a></if><p class="center"><br><a class="btn5" href="__URL__/ResumeManage/resumePreview" target='_blank'>简历预览</a></p>
+			</form>
+			</div>
+		</div>
+	</div>	
+</body>
+<script type='text/javascript' src='__JS__/loadResume.js'></script>
+<script>
+$('.dateButton').each(function(){
+	var year = new Date().getFullYear();
+	var str='';
+	if($(this).attr('data')){
+		if($(this).attr('name')=='eedate_y' || $(this).attr('name')=='iedate_y'){
+			year += 1;
+		}
+		for(var i=40;i>=0;i--){
+			str += (year-i)+'|';
+		}
+		str = str.substring(0,str.length-1);
+		$(this).attr('data',str);
+	}else if($(this).attr('datay')){
+		if($(this).attr('name')=='eedate_y' || $(this).attr('name')=='iedate_y'){
+			year += 1;
+		}
+		str = '@0|无工作经验'
+		for(var i=28;i>=0;i--){
+			if(i==28){
+				str +='@'+(year-i)+'|'+(year-i)+'或更早';
+			}else{
+				str += '@'+(year-i)+'|'+(year-i);
+			}
+		}
+		$(this).attr('datay',str);
+	}
+})
+var pdate = new MYRESUME.date_yyyym('pdate', document.getElementsByName('public_y')[0], document.getElementsByName('public_m')[0],'发表',true);
+var rdate = new MYRESUME.date_yyyym('rdate', document.getElementsByName('rewards_y')[0], document.getElementsByName('rewards_m')[0],'获奖',true);
+var education_date = new MYRESUME.date_startend('education_date', document.getElementsByName('esdate_y')[0], document.getElementsByName('esdate_m')[0], document.getElementsByName('eedate_y')[0], document.getElementsByName('eedate_m')[0], true, '教育');
+var work_date = new MYRESUME.date_startend('work_date', document.getElementsByName('wsdate_y')[0], document.getElementsByName('wsdate_m')[0], document.getElementsByName('wedate_y')[0], document.getElementsByName('wedate_m')[0], true, '工作');
+var is_date = new MYRESUME.date_startend('is_date', document.getElementsByName('isdate_y')[0], document.getElementsByName('isdate_m')[0], document.getElementsByName('iedate_y')[0], document.getElementsByName('iedate_m')[0], true, '实习');
+var pt_date = new MYRESUME.date_startend('pt_date', document.getElementsByName('psdate_y')[0], document.getElementsByName('psdate_m')[0], document.getElementsByName('pedate_y')[0], document.getElementsByName('pedate_m')[0], true, '兼职'); 
+$(function(){
+		loadRecruit();
+		var province_city_area = '{$userMessage.native_place}';
+		var pca = province_city_area.split('|');
+		$('#province').val(pca[0]);
+		$('#city').val(pca[1]);
+		$('#country').val(pca[2]);
+		var addressSelect = addressInit('province','city','country',pca[0],pca[1],pca[2]);
+		loadSelect($("#nation"),nations);
+		loadSelect($("#jobtitle"),jobtitle);
+		var gender="{$userMessage.gender}";
+		if(gender){
+			gender = gender=='男'?1:2;	
+			$('input[name="gender"][value='+gender+']').attr('checked',true);
+		}
+		var marital = "{$userMessage.marital_status}";
+		if(marital){
+			marital = marital =='未婚'?1:2;
+			$('input[name="marital_status"][value='+marital+']').attr('checked',true);
+		}
+		var oversea = "{$userMessage.oversea}";
+		if(oversea){
+			oversea= oversea=='有'?1:0;
+			$('input[name="oversea"][value='+oversea+']').attr('checked',true);
+		}
+		var current = "{$userMessage.current}";
+		if(current){
+			current= current=='是'?1:2;
+			$('input[name="current"][value='+current+']').attr('checked',true).change();
+		}
+		$('#depart').val('{$position.depart_code}');
+		$('#depart').change();
+		for(var i=0;i<$('#nation')[0].options.length;i++){
+			if($('#nation')[0].options[i].innerHTML=='{$userMessage.nation}'){
+				$('#nation')[0].value = $('#nation')[0].options[i].value;
+			}
+		}
+		for(var i=0;i<$('#english_level')[0].options.length;i++){
+			if($('#english_level')[0].options[i].innerHTML=='{$userMessage.english_level}'){
+				$('#english_level')[0].value = $('#english_level')[0].options[i].value;
+			}
+		}
+		for(var i=0;i<$('#compute_level')[0].options.length;i++){
+			if($('#compute_level')[0].options[i].innerHTML=='{$userMessage.compute_level}'){
+				$('#compute_level')[0].value = $('#compute_level')[0].options[i].value;
+			}
+		}
+		for(var i=0;i<$('#card_type')[0].options.length;i++){
+			if($('#card_type')[0].options[i].innerHTML=='{$userMessage.card_type}'){
+				$('#card_type')[0].value = $('#card_type')[0].options[i].value;
+			}
+		}
+		for(var i=0;i<$('#train_status')[0].options.length;i++){
+			if($('#train_status')[0].options[i].innerHTML=='{$userMessage.train_status}'){
+				$('#train_status')[0].value = $('#train_status')[0].options[i].value;
+			}
+		}
+		for(var i=0;i<$('#education')[0].options.length;i++){
+			if($('#education')[0].options[i].innerHTML=='{$userMessage.education}'){
+				$('#education')[0].value = $('#education')[0].options[i].value;
+				$('#education').val($('#education')[0].options[i].value);
+			}
+		}
+		for(var i=0;i<$('#politics_status')[0].options.length;i++){
+			if($('#politics_status')[0].options[i].innerHTML=='{$userMessage.politics_status}'){
+				$('#politics_status')[0].value = $('#politics_status')[0].options[i].value;
+				$('#politics_status').val($('#politics_status')[0].options[i].value);
+			}
+		}
+		loadEdu();loadJob();loadPractice();loadPartTimeJob();loadLanguage();loadCertificate();loadPaper();loadRewards();loadAccessory();loadTask();
+		workExpShow();
+	})
+	$("input:radio[name='current']").change(function (){
+		$(this).parent().next().remove();
+		$(this).parent().next().remove();
+		if($(this).val()==1){
+			$('<th><span>*</span><font>学历/学位预计取得时间</font></th>'+
+					'<td><input value="<if condition="$userMessage.graduate_time neq null">{$userMessage.graduate_time}<else/>选择/修改</if>" id="brithButton" name="graduate_time" class="selectBut2" onclick="calendar.show(this);" type="button"></td>')
+					.insertAfter($(this).parent());
+			$('#attach_content').html('附件上传（选填）');
+		}else if($(this).val()==2){
+			$('<td colspan="2"><span>*</span><font>请在附件上传中上传您的毕业/学位证书/职称证书</font></td>').insertAfter($(this).parent());
+			$('#attach_content').html('附件上传（毕业/学位证书必须上传	）');
+		}
+	});
+	$('.part-switch').click(function(){
+		if($(this).find('font').html()=='展开'){
+			$(this).find('font').html('收起');
+			$(this).find('i').css('background-position','0px -182px');
+			$(this).parent().next().css('display','');
+		}else{
+			$(this).find('font').html('展开');
+			$(this).find('i').css('background-position','0px -199px');
+			$(this).parent().next().css('display','none');
+		}	
+	})
+
+	function workExpShow(){
+		if($("#expeButton").val()=='无工作经验'){
+			$('#workExp').hide();
+		}else{
+			$('#workExp').show();
+		}
+	}
+</script>
+</html>

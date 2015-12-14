@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>浙江省立同德医院招聘系统</title>
+<meta content="initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes, width=device-width" name="viewport">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<link href='__CSS__/bootstrap.min.css' rel='stylesheet'/>
+<include file='Tpl/html/common/common_css_js.html'/>
+<script type='text/javascript' src='__JS__/register.js'></script>
+<script type='text/javascript' src='__JS__/csdn.js'></script>
+<link href='__CSS__/login-all.css' rel='stylesheet'/>
+<style>
+	*{
+		box-sizing: content-box;
+	}
+</style>
+</head>
+<body>
+	<include file='Tpl/html/common/header.html'/>
+	<div id="wrap">
+    	<div id="container">
+        	<div id="mainContent">
+        		<div id='reg'>
+	        		<div id="reg_con"><h2>用户密码重置</h2><br />
+					<dl><dd>邮箱地址（Email）：<span class="f_f00">*</span><span id="u_error" class="f_f00"></span></dd><dt><input id="u" type="text" class="reg_text" maxlength="50"  /> <span id="error1"> </span></dt></dl><br />
+					<p><input id="reset" type="button" class="login-btn" value="重置" tabindex="4" /></p><p id="sp_err" class="f_f00"></p><br /><br /></div>
+					<div id="reg_other"><ul><li>如果你还不是注册用户，请先使用邮箱地址注册账户。</li><li><a id="regnow" href="__URL__/Login/showRegister" class="login-btn reg_btn" target="_top">注册</a></li></ul></div></div>
+	        	</div>
+        </div>
+     </div>
+</body>
+<script type='text/javascript'>
+	$('#reset').click(function() {
+	  if ($("#u").val().length == 0) {
+	    alert('邮箱地址不能为空');
+	  } else {
+	    if (window.confirm('确定提交操作吗？')) {
+	      $.ajax({
+	        url: "__URL__/Login/sendEmail",
+	        cache: false,
+	        datatype: "json",
+	        type:'post',
+	        data: {em: $("#u").val()},
+	        beforeSend: function(XMLHttpRequest) {
+	          $("#error1").empty().html("<img alt=\"Loading...\" src=\"../../Tpl/images/ajaxloader_arrows.gif\" />");
+	        },
+	        success: function(data) {
+	         if(data=='notexist'){
+	        	 alert('该用户名不存在');
+	         }else if(data==''){
+	        	 alert('重置密码邮件发送失败，请联系系统管理员');
+	         }else{
+	        	 alert('邮件发送成功，请登录邮箱查看');
+	         }
+	        },
+	        complete: function() {
+	          $("#error1").empty();
+	          $("#u").attr("value", "");
+	        },
+	        error: function() {
+	          alert("加载数据失败，请刷新页面重试！");
+	        }
+	      });
+	    } else {
+	      return false;
+	    }
+	  }
+	})
+</script>

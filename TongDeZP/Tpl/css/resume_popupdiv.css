@@ -1,0 +1,36 @@
+@CHARSET "UTF-8";
+.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
+.c\learfix:after { line-height: 0; }
+.clearfix {display: inline-block;}
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+
+.popupDiv_r {visibility:hidden;position:absolute;top:-100px;left:-100px;z-index:99;}
+.popupDiv_r .span4a {cursor:pointer;}
+.popupDiv_r .separatorLine {clear:both;border-top:#999999 1px dotted;margin:5px 0 10px 0;}
+.popupDiv_r .topLeft {width:8px;height:8px;background:url('images/topleft_r.gif') no-repeat;float:left;}
+.popupDiv_r .topCenterOrg {height:8px;background:#feeed5 url('images/popupdivtop.gif') repeat-x left top;}
+.popupDiv_r .topCenterWhite {height:8px;background:#ffffff url('images/popupdivtop.gif') repeat-x left top;}
+.popupDiv_r .topRight {width:8px;height:8px;background:url('images/topright_r.gif') no-repeat;float:right;}
+.popupDiv_r .title {height:22px;clear:both;background:#feeed5;border-left:#ffc264 1px solid;border-right:#ffc264 4px solid;padding:0 10px;}
+.popupDiv_r .title .left {float:left;width:auto;padding:0;}
+.popupDiv_r .title .name {font-size:14px;font-weight:bold;color:#3f419e;}
+.popupDiv_r .title .now {font-size:12px;font-weight:normal;color:#000000;}
+.popupDiv_r .title .right {float:right;width:auto;padding:0;}
+.popupDiv_r .loading {width:100%;text-align:center;clear:both;background:#ffffff;border-left:#ffc264 1px solid;border-right:#ffc264 4px solid;padding:10px 0;}
+.popupDiv_r .content {clear:both;background:#ffffff;border-left:#ffc264 1px solid;border-right:#ffc264 4px solid;padding:10px;}
+.popupDiv_r .content table {width:100%;}
+.popupDiv_r .content table td {padding:2px;}
+.popupDiv_r .content table td .span4a {color:#3f419e;}
+.popupDiv_r .content table td .focus {color:#ff8400;}
+.popupDiv_r .content .span4a {color:#3f419e;}
+.popupDiv_r .content .focus {color:#ff8400;}
+.popupDiv_r .content .dataTitle {color:#000000;font-size:12px;font-weight:bold;letter-spacing:1px;margin-bottom:5px;}
+.popupDiv_r .content .dataTitle .span4a {color:#3f419e;font-size:12px;font-weight:bold;}
+.popupDiv_r .content .dataTitle .focus {color:#ff8400;font-size:12px;font-weight:bold;}
+.popupDiv_r .content .dataTitle .fn {color:#3f419e;font-size:12px;font-weight:normal;}
+.popupDiv_r .bottomLeft {width:8px;height:7px;background:url('images/bottomleft_r.gif') no-repeat;float:left;}
+.popupDiv_r .bottomCenter {height:7px;background:#ffffff url('images/popupdivbottom.gif') repeat-x left bottom;}
+.popupDiv_r .bottomRight {width:8px;height:7px;background:url('images/bottomright_r.gif') no-repeat;float:right;}
+
+.divMask {position:absolute;background:#efefef;}

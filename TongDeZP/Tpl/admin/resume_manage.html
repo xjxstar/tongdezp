@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href='__CSS__/bootstrap.min.css' type='text/css' rel='stylesheet'/>
+<link href='__CSS__/miniui.css' type='text/css' rel='stylesheet'/>
+<style>
+	label{
+		font-weight:normal;
+	}
+</style>
+</head>
+<body>
+	<div style="width:100%;">
+	        <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
+	            <table style="width:100%;" id='search_table'>
+	                <tr>
+	                	<td style="width:100%;">
+	                        <a class="mini-button" iconCls="icon-remove" onclick="removeRow()" >删除</a>         
+	                    </td>
+	                    <td style="white-space:nowrap;">
+	                    	<form class="form-inline" id='searchForm'>
+  								<div class="form-group">
+  									<label>请输入查询条件：</label>
+  									<select class='form-control' name='education'><option value="0">请选择学历</option><option value="博士">博士</option><option value="硕士">硕士</option><option value="本科">本科</option><option value="大专">大专</option><option value="中专">中专</option></select>
+  									<select name='status' class='form-control'>
+  										<option value="0">请选择审核状态</option><option value="1">未审核</option><option value="2">审核不通过</option><option value="3">审核通过</option><option value="5">重新填写待审核</option></select>
+  									<select name='jobtitle' class='form-control'>
+  										<option value='0'>请选择职称</option>
+  										<option value='1'>待聘</option>
+  										<option value='2'>初级</option>
+  										<option value='3'>中级</option>
+  										<option value='4'>副高</option>
+  										<option value='5'>正高</option>
+  									</select>
+  									<input class='form-control' name='depart_code' placeholder='岗位代码' />
+  									<input class='form-control' name='name' placeholder='姓名'/>
+  									<button type="button" class="btn btn-default" onclick='search();'>查询</button>
+  									<button type="button" class="btn btn-default" onclick="exportExcel();">导出Excel</button>
+  								</div>
+  							</form>
+	                    </td>
+	                    <from action='#' id='excelForm' method='post'>
+	                    	<input type='hidden' id='filename' name='filename'/>
+	                    	<input type='hidden' id='ths' name='ths'/>
+	                    	<input type='hidden' id='tableData' name='tableData'/>
+	                    </from>
+	                </tr>
+	            </table>           
+	        </div>
+	    </div>
+	<div id="datagrid1" class="mini-datagrid" style="height:350px;width:100%;" 
+	        url="__URL__/Resume/getAllPersonalInfo" idField="id" 
+	        allowResize="true" pageSize="10" 
+	        allowCellEdit="true" allowCellSelect="true" multiSelect="true" 
+	        editNextOnEnterKey="true"  editNextRowCell="true"
+	    >
+	        <div property="columns">
+	            <div type="indexcolumn"></div>
+	            <div type="checkcolumn"></div> 
+	            <div name="name"  field="name" headerAlign="center" allowSort="true" width="50" >姓名
+	                <input class="mini-textbox" style="width:100%;" minWidth="50" />
+	            </div>
+	            <div name="gender"  field="gender" headerAlign="center" allowSort="true" width="30" >性别
+	                <input class="mini-textbox" style="width:100%;" minWidth="30" />
+	            </div>
+	             <div name='nation'  field="nation" headerAlign="center" allowSort="true" width="40" >民族
+	                <input class="mini-textbox" style="width:100%;" minWidth="40" />
+	            </div>
+	             <div name='native_place'  field="native_place" headerAlign="center" allowSort="true" width="80" >籍贯
+	                <input class="mini-textbox" style="width:100%;" minWidth="80" />
+	            </div>
+	            <div name='card_no'  field="card_no" headerAlign="center" allowSort="true" width="135" >证件号码
+	                <input class="mini-textbox" style="width:100%;" minWidth="135" />
+	            </div>
+	            <div name='position'  field="position" headerAlign="center" allowSort="true" width="60" >应聘科室
+	                <input class="mini-textbox" style="width:100%;" minWidth="60" />
+	            </div> 
+	            <div name='depart_code'  field="depart_code" headerAlign="center" allowSort="true" width="70" >岗位代码
+	                <input class="mini-textbox" style="width:100%;" minWidth="70" />
+	            </div> 
+	            <div name="current"  field="current" headerAlign="center" allowSort="true" width="50" >应/往届
+	                <input class="mini-textbox" style="width:100%;" minWidth="60" />
+	            </div> 
+	            <div name="jobtitle"  field="jobtitle" headerAlign="center" allowSort="true" width="40" >职称
+	                <input class="mini-textbox" style="width:100%;" minWidth="40" />
+	            </div>
+	            <div name="education"  field="education" headerAlign="center" allowSort="true" width="55" >最高学历/学位
+	                <input class="mini-textbox" style="width:100%;" minWidth="55" />
+	            </div> 
+	            <div name="major"  field="major" headerAlign="center" allowSort="true" width="70" >所学专业
+	                <input class="mini-textbox" style="width:100%;" minWidth="70" />
+	            </div> 
+
+	            <div name="train"  field="train" headerAlign="center" allowSort="true" width="55" >培养方式
+	                <input class="mini-textbox" style="width:100%;" minWidth="55" />
+	            </div> 
+	            <div name='school'  field="school" headerAlign="center" allowSort="true" width="90" >毕业院校
+	                <input class="mini-textbox" style="width:100%;" minWidth="90" />
+	            </div>
+	            <div name='workon'  field="workon" headerAlign="center" allowSort="true" width="60" >工作单位
+	                <input class="mini-textbox" style="width:100%;" minWidth="60" />
+	            </div>
+	            <div name='train_status'  field="train_status" headerAlign="center" allowSort="true" width="90" >住院医师规范化培训状态
+	                <input class="mini-textbox" style="width:100%;" minWidth="90" />
+	            </div>
+	            <div name='link1'  field="link1" headerAlign="center" allowSort="true" width="100" >联系方式
+	                <input class="mini-textbox" style="width:100%;" minWidth="100" />
+	            </div>
+	            <div name='submit_time'  field="submit_time" headerAlign="center" allowSort="true" width="100" dateFormat="yyyy-MM-dd HH:mm:ss">提交时间
+	                <input class="mini-textbox" style="width:100%;" minWidth="100" />
+	            </div>
+	            <div name='status'  field="status" headerAlign="center" allowSort="true" width="70" >审核状态
+	                <input class="mini-textbox" style="width:100%;" minWidth="70" />
+	            </div> 
+	            <div name='remark'  field="remark" headerAlign="center" allowSort="true" width="120" >审核备注
+	                <input class="mini-textbox" style="width:100%;" minWidth="140" />
+	            </div> 
+	            <div name="action"  width="120" headerAlign="center" align="center" renderer="onActionRenderer" cellStyle="padding:0;">操作</div> 
+	        </div>
+	    </div>
+</body>
+<script type="text/javascript" src='__JS__/jquery.js'></script>
+<script type="text/javascript" src='__JS__/miniui.js'></script>	
+<script>
+mini.parse();
+var grid = mini.get("datagrid1");
+grid.load();
+grid.frozenColumns(0,1);
+var params = '';
+function search() {
+	params = $("#searchForm").serialize();
+    grid.load({params:params});
+}
+function removeRow(){
+	var rows = grid.getSelecteds();
+	if(rows.length<=0){
+		alert('没有选中的记录');
+	}
+	if(confirm('确认删除')){
+		$.post('__URL__/Resume/deleteResume',{rows:rows},function(json){
+		if(json.status==0){
+			alert(json.info);
+		}else{
+			grid.reload();
+		}
+	})
+	}
+}
+function onKeyEnter(e) {
+    search();
+}
+function exportExcel(){
+	location.href='__URL__/Resume/exportPersonalInfo/params/'+params;
+}
+function onActionRenderer(e) {
+    var s = ' <a class="Edit_Button" target="_blank" href="__URL__/ResumeManage/resumePreview/userId/'+e.record.user_id+'" >查看简历</a>'
+    	+ ' <a class="Edit_Button"  onclick="check('+e.record.user_id+')" >资格审核</a>';
+    	if(e.record.status!='未审核'){
+		s = ' <a class="Edit_Button" target="_blank" href="__URL__/ResumeManage/resumePreview/userId/'+e.record.user_id+'" >查看简历</a>'
+    	+ ' <a class="Edit_Button"  onclick="check('+e.record.user_id+')" >重新审核</a>';
+	}
+    return s;
+}
+function check(userId){
+	var url = '__URL__/ResumeManage/resumeCheck/userId/'+userId;
+	mini.open({
+			url:url,
+			showMaxButton:false,
+			title:'资格审核',
+			width:450,
+			height:220,
+			ondestroy: function () { 
+				grid.reload();
+			}
+		})
+}
+</script>
+</html>

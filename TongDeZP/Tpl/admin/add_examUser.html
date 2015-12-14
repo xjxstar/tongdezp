@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<include file='Tpl/html/common/miniui.html'/>
+</head>
+<body style="margin:0px;padding:0px;overflow-y:hidden;">
+	<div style="width:100%;">
+	        <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
+	            <table style="width:80%;">
+	                <tr>
+	                    <td style="white-space:nowrap;">
+	                        <input id="key" class="mini-textbox" emptyText="请输入姓名" style="width:150px;" onenter="onKeyEnter"/>   
+	                        <a class="mini-button" onclick="search()">查询</a>
+	                    </td>
+	                </tr>
+	            </table>           
+	        </div>
+	</div>
+	<div id="datagrid1" class="mini-datagrid" style="width:100%;height:300px;" 
+	        url="__URL__/Resume/getExamPersonalInfo" idField="id" 
+	        allowResize="true" pageSize="10"  allowCellSelect="true" 
+	        multiSelect="true" editNextOnEnterKey="true"  editNextRowCell="true">
+		<div property="columns">
+	       <div type="indexcolumn"></div>
+	       <div type='checkcolumn' style='width:50px;'></div>
+	             <div name="name"  field="name" headerAlign="center" allowSort="true" width="50" >姓名
+	                <input class="mini-textbox" style="width:100%;" minWidth="50" />
+	            </div>
+	            <div name="gender"  field="gender" headerAlign="center" allowSort="true" width="30" >性别
+	                <input class="mini-textbox" style="width:100%;" minWidth="30" />
+	            </div>
+	            <div name="birth_date"  field="birth_date" headerAlign="center" allowSort="true" width="80" >出生日期
+	                <input class="mini-textbox" style="width:100%;" minWidth="80" />
+	            </div>
+	            <div name="nation"  field="nation" headerAlign="center" allowSort="true" width="60" >民族
+	                <input class="mini-textbox" style="width:100%;" minWidth="60" />
+	            </div> 
+	            <div name='education'  field="education" headerAlign="center" allowSort="true" width="50" >学历
+	                <input class="mini-textbox" style="width:100%;" minWidth="50" />
+	            </div>
+	            <div name='marital_status'  field="marital_status" headerAlign="center" allowSort="true" width="55" >婚姻状况
+	                <input class="mini-textbox" style="width:100%;" minWidth="55" />
+	            </div>
+	            <div name='native_place'  field="native_place" headerAlign="center" allowSort="true" width="100" >籍贯
+	                <input class="mini-textbox" style="width:100%;" minWidth="100" />
+	            </div>
+	            <div name='card_no'  field="card_no" headerAlign="center" allowSort="true" width="140" >身份证号码
+	                <input class="mini-textbox" style="width:100%;" minWidth="140" />
+	            </div>
+	            <div name='english_level'  field="english_level" headerAlign="center" allowSort="true" width="60" >英语等级
+	                <input class="mini-textbox" style="width:100%;" minWidth="60" />
+	            </div>
+	            <div name='politics_status'  field="politics_status" headerAlign="center" allowSort="true" width="60" >政治面貌
+	                <input class="mini-textbox" style="width:100%;" minWidth="60" />
+	            </div>
+	            <div name='link1'  field="link1" headerAlign="center" allowSort="true" width="90" >联系方式
+	                <input class="mini-textbox" style="width:100%;" minWidth="90" />
+	            </div>
+	            <div name='email'  field="email" headerAlign="center" allowSort="true" width="150" >邮箱
+	                <input class="mini-textbox" style="width:100%;" minWidth="150" />
+	            </div>
+	            <div name='study_or_work'  field="study_or_work" headerAlign="center" allowSort="true" width="100" >现工作/学习单位
+	                <input class="mini-textbox" style="width:100%;" minWidth="100" />
+	            </div> 
+		</div>        
+	</div>
+	<div class="mini-toolbar" style="text-align:center;padding-top:8px;padding-bottom:8px;" 
+        borderStyle="border-left:0;border-bottom:0;border-right:0;">
+        <a class="mini-button" style="width:80px;" onclick="onOk()">确定添加</a>
+        <span style="display:inline-block;width:25px;"></span>
+        <a class="mini-button" style="width:80px;" onclick="onCancel()">关闭</a>
+    </div>
+</body>
+<script>
+mini.parse();
+var grid = mini.get("datagrid1");
+grid.load();
+function onOk() {
+	var rowData = grid.getSelecteds();
+	var roomId = '{$roomId}';
+	if(rowData){
+		$.ajax({
+			type:'post',
+			data:{data:rowData,roomId:roomId},
+			url:'__URL__/Admission/addUserAdmission',
+			success:function(data){
+				alert('添加成功！'); 
+				grid.reload();
+			},error:function(XMLResponse){
+				console.log(XMLResponse);
+			}
+		});
+	}
+	
+}
+function search() {
+    var key = mini.get("key").getValue();
+    grid.load({ key: key });
+}
+function onKeyEnter(e) {
+  search();
+}
+function onCancel() {
+    CloseWindow("cancel");
+}
+function CloseWindow(action) {
+    if (window.CloseOwnerWindow) return window.CloseOwnerWindow(action);
+    else window.close();
+}
+</script>
+</html>

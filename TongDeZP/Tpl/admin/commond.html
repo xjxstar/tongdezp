@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href='__CSS__/miniui.css' type='text/css' rel='stylesheet'/>
+<script type="text/javascript" src='__JS__/jquery.js'></script>
+<script type="text/javascript" src='__JS__/miniui.js'></script>
+<style>
+	label{
+		font-weight:normal;
+	}
+</style>
+<body>
+	<div style="width:100%;">
+	        <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
+	            <table style="width:100%;" id='search_table'>
+	                <tr>
+	                	<td style="width:100%;">
+	                		<a class="mini-button" iconCls="icon-remove" onclick="deleteNotice()" >删除</a>
+	                        <a class="mini-button" iconCls="icon-add" onclick="addNotice()" >发布新的通知公告</a> 
+	                                   
+	                    </td>
+	                    <td style="white-space:nowrap;">
+	                        <input id="key" class="mini-textbox" emptyText="请输入通知公告关键字"  onenter="onKeyEnter"/>   
+	                        <a class="mini-button" onclick="search()">查询</a>
+	                        <!-- <a class="mini-button" onclick="exportExcel()">导出Excel</a> -->
+	                    </td>
+	                </tr>
+	            </table>           
+	        </div>
+	    </div>
+	<div id="datagrid1" class="mini-datagrid" style="height:350px;width:100%;" 
+	        url="__URL__/Notice/getNotice" idField="id" 
+	        allowResize="true" pageSize="10" 
+	        allowCellEdit="true" allowCellSelect="true" multiSelect="true" 
+	        editNextOnEnterKey="true"  editNextRowCell="true"
+	    >
+	        <div property="columns">
+	            <div type="indexcolumn"></div>
+	            <div type="checkcolumn"></div> 
+	            <div name="title"  field="title" headerAlign="center" allowSort="true" width="150" >通知公告标题
+	                <input class="mini-textbox" style="width:100%;" minWidth="150" />
+	            </div>
+	            <div name="public_time"  field="public_time" headerAlign="center" allowSort="true" width="80" dateFormat="yyyy-MM-dd HH:mm:ss">发布时间
+	                <input class="mini-datepicker" format="yyyy-MM-dd H:mm:ss" showTime="true" style="width:100%;" minWidth="80" />
+	            </div>
+	            <div name='content'  field="content" headerAlign="center" allowSort="true" width="200" >内容
+	                <input class="mini-textbox" style="width:100%;" minWidth="200" />
+	            </div> 
+	            <div name="action"  width="80" headerAlign="center" align="center" renderer="onActionRenderer" cellStyle="padding:0;">操作</div>       
+	        </div>
+	    </div>
+</body>
+<script>
+
+mini.parse();
+var grid = mini.get("datagrid1");
+grid.load();
+var params = '';
+function search() {
+	$('#search_table tbody tr td select').each(function(){
+		var name = $(this).attr('name');
+		if((name=='work_ym'||name=='politics_status')&&$(this).val()!=0){
+			params = params + $(this).attr('name')+':'+$(this).val()+',';
+		}else if($(this).val()!=0){
+			params = params + $(this).attr('name')+':'+$(this).find('option[value='+$(this).val()+']').html()+',';	
+		}
+	});
+    var name = mini.get("key").getValue();
+    if(name){
+    	params ="name:"+name+',';
+    }
+    grid.load({ key: key});
+}
+function onKeyEnter(e) {
+    search();
+}
+function addNotice(){
+	mini.open({
+        url: "__URL__/Admin/addNotice",
+        title: "发布通知公告信息", width: 600, height: 450,
+        ondestroy: function (action) {
+            grid.reload();
+        }
+    });
+}
+function onActionRenderer(e) {
+    var grid = e.sender;
+    var record = e.record;
+    var uid = record._uid;
+    var rowIndex = e.rowIndex;
+    var s = ' <a class="Edit_Button" href="javascript:editRow(\'' + uid + '\')" >编辑</a>';
+    return s;
+}
+function editRow(row_uid) {
+	var row = grid.getRowByUID(row_uid);
+	mini.open({
+        url: "__URL__/Admin/addNotice?id="+row.id,
+        title: "编辑通知公告信息", width: 600, height: 450,
+        ondestroy: function (action) {
+            grid.reload();
+        }
+    });
+}
+function deleteNotice(){
+	var rows = grid.getSelecteds();
+        if (confirm("确定删除此记录？")) {
+        	if (rows.length > 0) {
+            	grid.removeRows(rows, true);
+            }
+	        $.ajax({
+		        url: "__URL__/Notice/deleteNotice",
+		        data: { rows: rows },
+		        type: "post",
+		        success: function (text) {
+		        	grid.reload();
+		        },
+		        error: function (jqXHR, textStatus, errorThrown) {
+		            alert(jqXHR.responseText);
+		        }
+		    });
+        }
+}
+</script>
+</html>

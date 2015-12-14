@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href='__CSS__/bootstrap.min.css' type='text/css' rel='stylesheet'/>
+<link href='__CSS__/miniui.css' type='text/css' rel='stylesheet'/>
+<script type="text/javascript" src='__JS__/jquery.js'></script>
+<script type="text/javascript" src='__JS__/miniui.js'></script>
+<script type='text/javascript' src='__JS__/ajaxfileupload.js' async='async'></script>
+<style>
+	label{
+		font-weight:normal;
+	}
+	.file_border{
+		border:1px solid #ccc;
+		display:inline-block;
+	}
+</style>
+</head>
+<body>
+	<div style="width:100%;">
+			<span>Excel上传新的招聘信息：<input type='file' style='border:1px solid #ccc;display:inline-block;' id='zpExcel' name='zpExcel'/><input type='button' value='上传' onclick='ajaxFileUpload();' style='display:inline-block;width:60px;'/>
+			<a href='__URL__/Recruit/downloadTpl'>下载模板excel</a></span>
+	        <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
+	            <table style="width:100%;" id='search_table'>
+	                <tr>
+	                	<td style="width:100%;">
+	                        <a class="mini-button" iconCls="icon-remove" onclick="removeRow()" >删除</a>         
+	                        <a class="mini-button" iconCls="icon-add" onclick="addRecruit()" >发布新的招聘信息</a>            
+	                    </td>
+	                    <td style="white-space:nowrap;">
+	                        <input id="key" class="mini-textbox" emptyText="请输入岗位名称"  onenter="onKeyEnter"/>   
+	                        <a class="mini-button" onclick="search()">查询</a>
+	                        <!-- <a class="mini-button" onclick="exportExcel()">导出Excel</a> -->
+	                    </td>
+	                </tr>
+	            </table>           
+	        </div>
+	    </div>
+	<div id="datagrid1" class="mini-datagrid" style="height:350px;width:100%;" 
+	        url="__URL__/Recruit/getRecruit" idField="id" 
+	        allowResize="true" pageSize="10" pageIndex='1' 
+	        allowCellEdit="true" allowCellSelect="true" multiSelect="true" 
+	        editNextOnEnterKey="true"  editNextRowCell="true"
+	    >
+	        <div property="columns">
+	            <div type="indexcolumn"></div>
+	            <div type="checkcolumn"></div> 
+	            <div name="position"  field="position" headerAlign="center" allowSort="true" width="80" >部门或岗位
+	                <input class="mini-textbox" style="width:100%;" minWidth="50" />
+	            </div>
+	            <div name="area"  field="area" headerAlign="center" allowSort="true" width="60" >所在院区
+	                <input class="mini-textbox" style="width:100%;" minWidth="60" />
+	            </div>
+	            <div name="ptype"  field="ptype" headerAlign="center" allowSort="true" width="60" >岗位类别
+	                <input class="mini-textbox" style="width:100%;" minWidth="60" />
+	            </div>
+	            <div name="depart_code"  field="depart_code" headerAlign="center" allowSort="true" width="60" >岗位代码
+	                <input class="mini-textbox" style="width:100%;" minWidth="50" />
+	            </div>
+	            <div name='needed'  field="needed" headerAlign="center" allowSort="true" width="40" >人数
+	                <input class="mini-textbox" style="width:100%;" minWidth="40" />
+	            </div> 
+	            <div name="target"  field="target" headerAlign="center" allowSort="true" width="60" >招聘对象
+	                <input class="mini-textbox" style="width:100%;" minWidth="50" />
+	            </div>
+	            <div name="age_upper"  field="age_upper" headerAlign="center" allowSort="true" width="50" >年龄上限
+	                <input class="mini-textbox" style="width:100%;" minWidth="50" />
+	            </div>
+	            <div name="major"  field="major" headerAlign="center" allowSort="true" width="80" >专业
+	                <input class="mini-textbox" style="width:100%;" minWidth="80" />
+	            </div>  
+	            <div name='education'  field="education" headerAlign="center" allowSort="true" width="50" >学历学位
+	                <input class="mini-textbox" style="width:100%;" minWidth="50" />
+	            </div>
+	            <div name='jobtitle'  field="jobtitle" headerAlign="center" allowSort="true" width="90" >职称或职业资格
+	                <input class="mini-textbox" style="width:100%;" minWidth="90" />
+	            </div>
+	            <!-- <div name='public_time'  field="public_time" dateFormat="yyyy-MM-dd HH:mm:ss" headerAlign="center" allowSort="true" width="80" >发布时间
+	                <input class="mini-textbox" style="width:100%;" minWidth="80" />
+	            </div>    -->
+	            <div name='remark'  field="remark" headerAlign="center" allowSort="true" width="100" >备注
+	                <input class="mini-textbox" style="width:100%;" minWidth="100" />
+	            </div> 
+	            <div name='test_subject'  field="test_subject" headerAlign="center" allowSort="true" width="80" >考试科目
+	                <input class="mini-textbox" style="width:100%;" minWidth="80" />
+	            </div> 
+	            <div name="action"  width="80" headerAlign="center" align="center" renderer="onActionRenderer" cellStyle="padding:0;">操作</div>       
+	        </div>
+	    </div>
+</body>
+<script>
+
+mini.parse();
+var grid = mini.get("datagrid1");
+grid.load();
+var params = '';
+function search() {
+	$('#search_table tbody tr td select').each(function(){
+		var name = $(this).attr('name');
+		if((name=='work_ym'||name=='politics_status')&&$(this).val()!=0){
+			params = params + $(this).attr('name')+':'+$(this).val()+',';
+		}else if($(this).val()!=0){
+			params = params + $(this).attr('name')+':'+$(this).find('option[value='+$(this).val()+']').html()+',';	
+		}
+	});
+    var name = mini.get("key").getValue();
+    if(name){
+    	params ="name:"+name+',';
+    }
+    grid.load({ key: key});
+}
+function onKeyEnter(e) {
+    search();
+}
+function addRecruit(){
+	mini.open({
+        url: "__URL__/Admin/addRecruit",
+        title: "发布招聘信息", width: 540, height: 460,
+        ondestroy: function (action) {
+            grid.reload();
+        }
+    });
+}
+function removeRow(){
+	var rows = grid.getSelecteds();
+	if(rows.length<=0){
+		alert('没有选择的记录');
+	}
+	if(confirm('确认删除')){
+		$.post('__URL__/Recruit/deleteRecruit',{rows:rows},function(json){
+			if(json.status==0){
+				alert(json.info);
+			}else{
+				grid.reload();
+			}
+		})
+	}
+	
+}
+function onActionRenderer(e) {
+    var grid = e.sender;
+    var record = e.record;
+    var uid = record._uid;
+    var rowIndex = e.rowIndex;
+    var s = ' <a class="Edit_Button" href="javascript:editRow(\'' + uid + '\')" >编辑</a>';
+    return s;
+}
+function exportExcel(){
+	location.href='__URL__/Resume/exportPersonalInfo?params='+params;
+}
+function editRow(row_uid) {
+	var row = grid.getRowByUID(row_uid);
+	mini.open({
+        url: "__URL__/Admin/addRecruit?id="+row.id,
+        title: "编辑招聘信息", width: 540, height: 460,
+        ondestroy: function (action) {
+            grid.reload();
+        }
+    });
+}
+function ajaxFileUpload() {
+	if($('#zpExcel').val()==''){
+		alert('未选择文件');
+		return;
+	}
+    $.ajaxFileUpload
+    (
+        {
+            url: '../Recruit/exportRecruit', //用于文件上传的服务器端请求地址
+            secureuri: false, //是否需要安全协议，一般设置为false
+            fileElementId: 'zpExcel', //文件上传域的ID
+            dataType: 'json', //返回值类型 一般设置为json
+            success: function (data, status)  //服务器成功响应处理函数
+            {
+            	if(data==1){
+            		alert('招聘信息上传成功');
+            		grid.reload();
+            	}else{
+            		alert(data);
+            	}
+            },
+            error: function (data, status, e)//服务器响应失败处理函数
+            {
+                alert(data.responseText);
+            }
+        }
+    )
+    return false;
+}
+</script>
+</html>

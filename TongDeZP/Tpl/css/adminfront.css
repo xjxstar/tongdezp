@@ -1,0 +1,27 @@
+.admin-header{
+	height:100px;
+	background:url(../images/body_head_top.jpg) repeat-x;
+}
+#logo{
+	display:inline-block;
+	height:80px;
+	margin:10px 0px 0px 20px;
+}
+#logo{
+	font-size:24px;
+	color:rgb(25,86,120);
+	font-style:italic;
+	font-weight:500;
+}
+.main_container{
+	width:100%;
+}
+.left_menu{
+	width:12%;
+	float:left;
+}
+.right_content{
+	width:88%;
+	float:left;
+	padding:0 10px 10px 10px;
+}

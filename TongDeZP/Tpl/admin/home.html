@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>同德医院招聘系统后台</title>
+<link href='__CSS__/adminfront.css' type='text/css' rel='stylesheet'/>
+<link href='__CSS__/bootstrap.min.css' type='text/css' rel='stylesheet'/>
+<script type='text/javascript' src='__JS__/jquery.js'></script>
+<include file='Tpl/html/common/miniui.html'/>
+</head>
+<style>
+	html,body{
+		font-family:Microsoft YaHei;
+	}
+	.top-tip{
+		font-size:14px;line-height:30px;
+	}
+	.noline{
+		outline:none;
+	}
+	.login-tip{
+		background-color: rgb(76,158,217);
+		border-color: #E7E7E7;
+		border-radius: 4px;
+		position: relative;
+		min-height: 42px;
+		border: 1px solid transparent;
+		display: block;
+		margin-bottom:10px;
+	}
+	.login-tip span{
+		line-height:42px;
+		text-indent:1em;
+		display:block;
+		color:#fff;
+		float:left;
+	}
+	.login-tip span a{
+		color:#fff;
+	}
+	.login-tip span a:hover{
+		color:#BBB;
+	}
+</style>
+<body>
+	<include file="Tpl/admin/head.html"/>
+	<div class='main_container'>
+		<div class='left_menu'>
+			<div class="list-group">
+			  <a href="#" class="list-group-item active" style='font-size:14px;'>
+			   信息管理
+			  </a>
+			  <a href="javascript:void(0)" class="list-group-item noline" id='resume' style='background:#e1e1e1'>简历信息</a>
+			  <a href="javascript:void(0)" class="list-group-item noline" id='recruit'>招聘信息</a>
+			  <a href="javascript:void(0)" class="list-group-item noline" id='test'>考试信息</a>
+			  <a href="javascript:void(0)" class="list-group-item noline" id='notice'>通知公告</a>
+			</div>
+		</div>
+		<div class='right_content'>
+			<div class='login-tip' style='height:30px;'>
+				<span><?php echo $_SESSION['admin']['username'] ?>欢迎您，登录时间：<?php echo  date('Y-m-d H:i:s',$_SESSION['admin']['last_login_time']) ?></span>
+				<span style='float:right;margin-right:20px;'><a onclick='changePwd()'>修改密码</a>  | <a href='__URL__/Admin/loginout'> 注销 </a></span>
+				<!-- <nav class='navbar navbar-default' >
+					<p class="navbar-text "><?php echo $_SESSION['admin']['username'] ?>欢迎您，登录时间：<?php echo  date('Y-m-d h:i:s',$_SESSION['admin']['last_login_time']) ?></p>
+				</nav> -->
+			</div>
+			<div class='right_table'>
+				<iframe id="iframe"  width="100%" height='400px;' src="__URL__/Admin/resumeManage" frameborder="0" scrolling="no"></iframe>
+			</div>
+		</div>
+	</div>
+</body>
+<script type='text/javascript'>
+	function changePwd(){
+		mini.open({
+			url:'__URL__/Admin/changePwd',
+			showMaxButton:false,
+			title:'重置用户密码',
+			width:450,
+			height:180
+		})
+	}
+		$("#resume").click(function(){
+			$('#iframe').attr('height','420');
+			$('#iframe').attr('src','__URL__/Admin/resumeManage');
+			$(this).css({'background':'#e1e1e1'}).siblings('.noline').css('background','#fff');
+		});
+		$("#recruit").click(function(){
+			$('#iframe').attr('height','420');
+			$('#iframe').attr('src','__URL__/Admin/recruitManage');
+			$(this).css('background','#e1e1e1').siblings('.noline').css('background','#fff');
+		});
+		$("#test").click(function(){
+			$('#iframe').attr('height','620');
+			$('#iframe').attr('src','__URL__/Admin/testManage');
+			$(this).css('background','#e1e1e1').siblings('.noline').css('background','#fff');
+		});
+		$("#notice").click(function(){
+			$('#iframe').attr('height','420');
+			$('#iframe').attr('src','__URL__/Admin/notice');
+			$(this).css('background','#e1e1e1').siblings('.noline').css('background','#fff');
+		});
+		$('.list-group-item').focus(function(){
+			$(this).css('outline','none');
+		})
+</script>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>浙江省立同德医院招聘系统</title>
+<meta content="initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes, width=device-width" name="viewport">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<link href='__CSS__/bootstrap.min.css' rel='stylesheet'/>
+<include file='Tpl/html/common/common_css_js.html'/>
+<script type='text/javascript' src='__JS__/csdn.js'></script>
+<script type='text/javascript' src='__JS__/login.js'></script>
+<link href='__CSS__/login-all.css' rel='stylesheet'/>
+<style>
+	*{
+		box-sizing: content-box;
+	}
+</style>
+</head>
+<body>
+	<include file='Tpl/html/common/header.html'/>
+	<div id="container">
+		<div class='notice_body'>
+			<div class='title'>{$notice.title}</div>
+			<div class='time'>{$notice.public_time|date='Y-m-d H:i:s',###}</div>
+			<div class='content'>{$notice.content}</div>
+		</div>
+	</div>
+	<include file="Tpl/html/common/foot.html"/>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<include file='Tpl/html/common/miniui.html'/>
+<style>
+.top-tip{display:block;font-size:16px;line-height:30px;font-weight:500;font-family:Microsoft YaHei;}
+</style>
+</head>
+<body style='margin:0px;'>
+		<div class="top-tip" >同德医院招聘考试考点表</div>
+		<div style="width:100%;float:left;_width:80%;">
+	        <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
+	            <table style="width:100%;">
+	                <tr>
+	                    <td style="width:100%;">
+	                    	<a class="mini-button" iconCls="icon-add" onclick="addRow()" tooltip="增加...">增加</a>
+	                        <a class="mini-button" iconCls="icon-remove" onclick="removeRow()" >删除</a>
+	                        <span class="separator"></span>
+	                        <a class="mini-button" iconCls="icon-save" onclick="saveData()" >保存</a>
+	                    </td>
+	                    <!-- <td style="white-space:nowrap;">
+	                        <input id="deptkey" class="mini-textbox" emptyText="请输入科室名" style="width:150px;" onenter="onKeyEnter"/>   
+	                        <a class="mini-button" onclick="search()">查询</a>
+	                    </td> -->
+	                </tr>
+	            </table>           
+	        </div>
+	    </div>
+	    <div id="examination_grid" class="mini-datagrid" style="width:100%;_width:80%;float:left;height:180px;" 
+	        url="__URL__/ExamRoom/getExamRoom" idField="id" 
+	        allowResize="true" pageSize="10" 
+	        allowCellEdit="true" allowCellSelect="true" multiSelect="true" 
+        	editNextOnEnterKey="true"  editNextRowCell="true"
+	        onselectionchanged="onSelectionChanged"  selectOnLoad="true"
+	    >
+	        <div property="columns">
+	            <div type="indexcolumn" width='20'></div>
+	            <!-- <div type="checkcolumn" width='20'></div> -->
+	            <div field="room_name" headerAlign="center"  width="100" >考点名称
+	                <input property="editor"  class="mini-textbox" style="width:100%;" minWidth="100" />
+	            </div>   
+	            <div  field="room_address"  headerAlign="center"  width="100" >考点地址
+	                <input property="editor"  class="mini-textbox" style="width:100%;" />
+	            </div> 
+	            <div  field="type"  headerAlign="center"  width="100" >考试类型
+	                <input property="editor"  class="mini-textbox" style="width:100%;" />
+	            </div>
+	             <div name="exam_time" field="exam_time" width="100" allowSort="true" dateFormat="yyyy-MM-dd HH:mm:ss">考试时间
+	                <input property="editor" class="mini-datepicker" style="width:100%;" format="yyyy-MM-dd H:mm:ss" timeFormat="H:mm:ss" showTime="true" showOkButton="true" showClearButton="false"/>
+	            </div>       
+	        </div>
+	 </div>
+	 <div style='clear:both'></div>
+	 <div class="top-tip" ><span id='roomName'></span>考点考试人员信息表</div>
+	 <div style="width:100%;float:left;_width:80%;">
+	        <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
+	            <table style="width:100%;">
+	                <tr>
+	                	<td style="width:100%;">
+	                        <a class="mini-button" iconCls="icon-remove" onclick="removeExamUser()" >删除</a>         
+	                        <a class="mini-button" iconCls="icon-add" href="javascript:addExamUser()">增加考试人员</a>          
+	                    </td>
+	                    <td style="white-space:nowrap;">
+	                        <input id="key" class="mini-textbox" emptyText="请输入姓名" style="width:150px;" onenter="onKeyEnter"/>   
+	                        <a class="mini-button" onclick="searchEmployee()">查询</a>
+	                    </td>
+	                </tr>
+	            </table>           
+	        </div>
+	    </div>
+	 <div id="examinee_grid" class="mini-datagrid" style="width:100%;_width:80%;float:left;height:300px;" 
+	        url="__URL__/Admission/getAdmission" idField="id" 
+	        allowResize="true" pageSize="10"  multiSelect="true" 
+	    >
+	        <div property="columns">
+	        	<div type="indexcolumn"></div>
+	        	<div type="checkcolumn"></div>
+	            <div name="name"  field="name" headerAlign="center" allowSort="true" readOnly='true' width="60" >姓名
+	                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="60" />
+	            </div>   
+	            <div name="gender"  field="gender" headerAlign="center" allowSort="true" readOnly='true' width="50" >性别
+	                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="50" />
+	            </div>
+	            <div name="card_no"  field="card_no" headerAlign="center" width="140" readOnly='true' >身份证号
+	                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="140"  />
+	            </div>
+	            <div name="level"  field="level" headerAlign="center" width="70"  >报考级别
+	                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="70"  />
+	            </div>
+	            <div name="classroom"  field="classroom" headerAlign="center" allowSort="true" width="60" >考场
+	                <input  property="editor" class="mini-textbox" style="width:100%;" minWidth="60" />
+	            </div>
+	            <div name="seat"  field="seat" headerAlign="center" allowSort="true" width="60" >座位号
+	                <input  property="editor" class="mini-textbox" style="width:100%;" minWidth="60" />
+	            </div>
+	            <div name="admission_no"  field="admission_no" headerAlign="center" readOnly='true' width="120" >准考证号
+	                <input  property="editor" class="mini-textbox" style="width:100%;" minWidth="140" />
+	            </div>	
+	            <div name="grade"  field="grade" headerAlign="center"  width="50" >笔试成绩
+	                <input  property="editor" class="mini-textbox" style="width:100%;" minWidth="50" />
+	            </div>	
+	            <div name="interview_grade"  field="interview_grade" headerAlign="center"  width="50" >面试成绩
+	                <input  property="editor" class="mini-textbox" style="width:100%;" minWidth="50" />
+	            </div>	
+	            <div name="action"  width="120" headerAlign="center" align="center" renderer="onActionRenderer" cellStyle="padding:0;">操作</div>              
+	        </div>
+	    </div>
+</body>
+<script>
+	mini.parse();
+	var examination_grid = mini.get("examination_grid");
+    var examinee_grid = mini.get("examinee_grid");
+    examination_grid.load();
+	function addRow() {          
+        var newRow = { name: "New Row" };
+        examination_grid.addRow(newRow, 0);
+        examination_grid.beginEditCell(newRow, "room_name");
+    }
+    function removeRow() {
+        var rows = examination_grid.getSelecteds();
+        if (confirm("确定删除此记录？")) {
+        	if (rows.length > 0) {
+            	examination_grid.removeRows(rows, true);
+            }
+	        $.ajax({
+		        url: "__URL__/ExamRoom/delExamRoom",
+		        data: { data: eval(rows) },
+		        type: "post",
+		        success: function (text) {
+		        	examination_grid.reload();
+		        },
+		        error: function (jqXHR, textStatus, errorThrown) {
+		            alert(jqXHR.responseText);
+		        }
+		    });
+        }
+    }
+	function saveData() { 
+	    var data = examination_grid.getChanges();
+	    /* for(var i=0;i<data.length;i++){
+	    	if(data[i]['room_name'])
+	    } */
+	    var json = mini.encode(data); 
+	    examination_grid.loading("保存中，请稍后......");
+	    $.ajax({
+	        url: "__URL__/ExamRoom/saveExamRoom",
+	        data: { data: json },
+	        type: "post",
+	        success: function (text) {
+	        	examination_grid.reload();
+	        },
+	        error: function (jqXHR, textStatus, errorThrown) {
+	            alert(jqXHR.responseText);
+	        }
+	    }); 
+	}
+	function onSelectionChanged(e) {
+        var grid = e.sender;
+        var record = grid.getSelected();
+        if (record) {
+        	$("#roomName").html(record.room_name);
+            examinee_grid.load({ room_id: record.id });
+        }
+    }
+	function addExamUser(){
+		var rows = examination_grid.getSelecteds();
+		var roomId = rows[0]['id'];
+    	mini.open({
+			url:'__URL__/Admin/addExamUser/roomId/'+roomId,
+			showMaxButton:false,
+			title:'请选择考试人员',
+			width:800,
+			height:400,
+			ondestroy: function () { 
+					examinee_grid.reload();
+			}
+		});
+    }
+	function onActionRenderer(e) {
+        var grid = e.sender;
+        var record = e.record;
+        var uid = record._uid;
+        var rowIndex = e.rowIndex;
+        var s = ' <a class="Edit_Button" href="javascript:editRow(\'' + uid + '\')" >试室安排</a>'
+                +' <a class="Delete_Button" href="javascript:editGrade(\'' + uid + '\')">成绩发布</a>';
+        if (grid.isEditingRow(record)) {
+            s = '<a class="Edit_Button" href="javascript:updateRow(\'' + uid + '\')">保存</a>'
+                + ' <a class="Edit_Button" href="javascript:cancelRow(\'' + uid + '\')">取消</a>'
+        }
+        return s;
+    }
+    function editRow(row_uid) {
+        var row = examinee_grid.getRowByUID(row_uid);
+        if (row) {
+        	examinee_grid.cancelEdit();
+        	var columns = examinee_grid.getColumns();
+        	for(var i=0;i<columns.length;i++){
+        		if(columns[i]['field']=='level'||columns[i]['field']=='classroom'||columns[i]['field']=='seat'){
+        			columns[i]['readOnly'] = false;
+        		}else if(columns[i]['field']=='grade'||columns[i]['field']=='interview_grade'){
+        			columns[i]['readOnly'] = true;
+        		}
+        	}
+        	examinee_grid.setColumns(columns);
+        	examinee_grid.beginEditRow(row);
+        }
+    }
+    function editGrade(row_uid) {
+        var row = examinee_grid.getRowByUID(row_uid);
+        if (row) {
+        	examinee_grid.cancelEdit();
+        	var columns = examinee_grid.getColumns();
+        	for(var i=0;i<columns.length;i++){
+        		if(columns[i]['field']=='level'||columns[i]['field']=='classroom'||columns[i]['field']=='seat'){
+        			columns[i]['readOnly'] = true;
+        		}else if(columns[i]['field']=='grade' || columns[i]['field']=='interview_grade'){
+        			columns[i]['readOnly'] = false;
+        		}
+        	}
+        	examinee_grid.setColumns(columns);
+        	examinee_grid.beginEditRow(row);
+        }
+    }
+    function cancelRow(row_uid) {            
+    	examinee_grid.reload();
+    }
+    function updateRow(row_uid) {
+        var row = examinee_grid.getRowByUID(row_uid);
+        examinee_grid.commitEdit();
+        var rowData = examinee_grid.getChanges();
+        if(rowData && rowData[0]){
+        	if(rowData[0]['classroom']==''){
+        		alert('请输入试室');
+        		examinee_grid.beginEditRow(row);
+	        	return;
+        	}
+        	if(rowData[0]['seat']==''){
+        		alert('请输入座位号');
+        		examinee_grid.beginEditRow(row);
+	        	return;
+        	}
+        	var json = mini.encode(rowData);
+            $.ajax({
+                url: "__URL__/Admission/saveAdmission",
+                type:'post',
+                data: { data: json },
+                success: function () {
+                	examinee_grid.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(jqXHR.responseText);
+                }
+            });
+        }
+    }
+    function removeExamUser(){
+    	var rows = examinee_grid.getSelecteds();
+    	if(rows.length==0){
+    		alert('没有记录被选中');
+    	}
+    	if(confirm('确定删除')){
+    		$.post('__URL__/Admission/removeExamUser',{rows:rows},function(json){
+    			if(json.status==0){
+    				alert(json.info);
+    			}else{
+    				examinee_grid.reload();
+    			}
+    		})
+    	}
+    }
+</script>
+</html>

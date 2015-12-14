@@ -1,0 +1,38 @@
+<div id="header">
+  <div id="top_tool"><dl>
+    <dt>
+      <ul><li><span target="_blank" style="color:#f00;line-height:1.5;font-size:14px;">欢迎来到浙江省立同德医院网上招聘系统!</span></li></ul>
+    </dt></dl>
+  </div>
+  <div id="logo">
+  	<img src='__IMG__/logo.png' height='80' width='64' ></img>
+  	<img src='__IMG__/head_logo.png' height='80' width='384' style='margin-left:-70px;'></img>
+    <img src='__IMG__/zhaopin.png' height='45' width='200' style='margin-bottom:20px;margin-left:20px;' ></img>
+   </a></div>
+  <!-- <div id="top_center"><div class="top_srh_txt"></div><div class="top_srh_btn"></div></div> -->
+  <div id="top_right"></div><div class="clearfloat"></div> </div>
+  <!-- <nav class="navbar-default" style='background:rgb(20,140,202);width:950px;height:50px;margin:0 auto 10px;' >
+  	<div class='navbar' style='height:50px;border:none;'> -->
+  <div class='header-navbar'>
+  		<ul>
+  			<li><a href='<?php if(empty($_SESSION['user'])): ?>__URL__<?php else :?>__URL__/ResumeManage<?php endif ?>'>首页</a></li>
+  			<li><a href='__URL__/Recruit'>岗位需求表</a></li>
+  			<li><a href='<?php if(empty($_SESSION['user'])): ?>__URL__<?php else :?>__URL__/TestManage<?php endif ?>'>考试管理</a></li>
+  		</ul>
+  		<div class='nav-right'>
+  			
+	  		<?php if(empty($_SESSION['user'])): ?>
+	  			<span><a href='__URL__'>登录</a></span>
+	  			<span class='divider'>|</span>
+	  			<span><a href='__URL__/Login/showRegister'>注册</a></span>
+	  		<?php else :?>
+	  			<span style='color:#fff;'>您好，<?php echo $_SESSION['user']['name']?></span>
+	  			<span class='divider'>|</span>
+	  			<span><a href='__URL__/Login/loginout' >退出</a></span>
+	  		<?php endif ?>
+	  	</div>
+  	</div>
+ <!-- </nav> -->
+  <script>
+  	$('.header-navbar li').eq({$selected}).find('a').addClass('active');
+  </script>

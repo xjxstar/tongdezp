@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>简历预览</title>
+<link href='__CSS__/resume_preview.css' rel='stylesheet'/>
+</head>
+<body>
+	<div class='resume_print' ><a href='javascript:preview();'>打印<img src='__IMG__/print_ico.gif' height='24'/></a></div>
+	<!--startprint-->
+	<div class="resumeBody">
+		<div class='resume_head'>个人简历</div>
+		<div class="summary">
+		<div class='resume_title'><span class="leftBlock"></span><label class="titleText">个人信息</label></div>
+			<table cellspacing='2' cellpadding='0'>
+				<tr>
+					<th>姓名：</th><td>{$personalInfo.name}</td>
+					<th>性别：</th><td>{$personalInfo.gender}</td>
+					<td colspan='2' rowspan='4'><img src='__APP__/{$personalInfo.self_photo}' height='140' width='110' style='display:block;margin:0 auto;'></img></td>
+				</tr>
+				<tr>
+					<th>民族：</th><td>{$personalInfo.nation}</td>
+					<th>出生日期：</th><td>{$personalInfo.birth_date}</td>
+				</tr>
+				<tr>
+					<th>婚姻状态：</th><td>{$personalInfo.marital_status}</td>
+					<th>政治面貌：</th><td id='politics'>{$personalInfo.politics_status}</td>
+				</tr>
+				<tr>
+					<th>邮箱：</th><td>{$personalInfo.email}</td>
+					<th>英语等级：</th><td>{$personalInfo.english_level}</td>
+				</tr>
+				<tr>
+					<th>海外工作/学习经历：</th><td>{$personalInfo.oversea}</td>
+					<th>应届毕业生：</th><td>{$personalInfo.current}</td>
+					<if condition='$personalInfo.current eq "是"'>
+						<th>预计毕业时间：</th><td>{$personalInfo.graduate_time}</td>
+					</if>
+				</tr>
+				<tr>
+					<th>首选联系方式：</th><td>{$personalInfo.link1}</td>
+					<th>备用联系方式：</th><td>{$personalInfo.link2}</td>
+					<th>参加工作年份：</th><td>{$personalInfo.work_ym}</td>
+				</tr>
+				<tr>
+					<th>证件类型：</th><td>{$personalInfo.card_type}</td>
+					<th>身份证号码：</th><td>{$personalInfo.card_no}</td>
+					<th>籍贯：</th><td>{$personalInfo.native_place}</td>
+				</tr>
+				<tr>
+					<th>通讯地址：</th><td colspan='3'>{$personalInfo.address}</td>
+					<th>计算机水平：</th><td>{$personalInfo.compute_level}</td>
+				</tr>
+				<tr>
+					<th>现工作/学习单位：</th><td colspan='3'>{$personalInfo.study_or_work}</td><th>住院医师规范化培训状态：</th><td colspan='1'>{$personalInfo.train_status}</td>
+				</tr>
+			</table>
+		</div>
+		<dl class="education">
+			<div class='resume_title'><span class="leftBlock"></span><label class="titleText">应聘岗位</label></div>
+			<dd>
+			<table><tr><th>应聘科室或岗位：</th><td>{$position.position}</td>
+				<th>科室代码：</th><td>{$position.depart_code}</td></tr>
+				<tr><th>报考专业：</th><td>{$position.major}</td></tr>
+			</table>
+			</if>
+			</dd>
+			<notempty name='educations'>
+			<div class='resume_title'><span class="leftBlock"></span><label class="titleText">教育经历</label></div>
+			<dd>
+			
+			<table><tr><th>时间</th><th>学历</th><th>学校</th><th>专业</th><th>培养方式</th></tr> 
+				<foreach name="educations" item="vo">
+					<tr><td>{$vo.start_time}-{$vo.end_time}</td><td>{$vo.education}</td><td>{$vo.school}</td><td>{$vo.major}</td><td>{$vo.train}</td></tr>
+
+				</foreach>
+			</table>
+			</if>
+			</dd>
+			</notempty>
+			<notempty name='jobs'>
+			<div class='resume_title'><span class="leftBlock"></span><label class="titleText">工作经历</label></div>
+			<dd >
+                <table cellspacing='0' cellpadding='0'>
+                	<foreach name="jobs" item="job">
+					<tr>
+						<th>工作时间：</th><td>{$job.start_time}-{$job.end_time}</td>
+						<th>单位名称：</th><td>{$job.unitname}</td>
+						<th></th><td></td>
+					</tr>
+					<tr>
+						<th>从事专业：</th><td>{$job.workon}</td>
+						<th>职称：</th><td>{$job.jobtitle}</td>
+						<th>职务：</th><td>{$job.job}</td>
+					</tr>
+					</foreach>
+				</table>
+            </dd>
+            </notempty>
+            <notempty name='practices'>
+			<div class='resume_title'><span class="leftBlock"></span><label class="titleText">实习情况及社会服务</label></div>
+			<dd >
+               <table >
+				<tr><th>实习/服务日期</th><th>实习/服务单位</th><th>实习/服务岗位</th></tr> 
+				<foreach name="practices" item="vo">
+					<tr><td>{$vo.start_time}-{$vo.end_time}</td><td>{$vo.practice_unit}</td><td>{$vo.practice_position}</td></tr>
+				</foreach>
+				</table>
+            </dd>
+            </notempty>
+            <notempty name='partTimeJobs'>
+			<div class='resume_title'><span class="leftBlock"></span><label class="titleText">机构、协会兼职情况</label></div>
+			<dd >
+            	<table >
+				<tr><th>起止时间</th><th>单位</th><th>职务</th></tr> 
+				<foreach name="partTimeJobs" item="vo">
+					<tr><td>{$vo.start_time}-{$vo.end_time}</td><td>{$vo.unitname}</td><td>{$vo.position}</td></tr>
+				</foreach>
+				</table>
+            </dd>
+            </notempty>
+            <notempty name='languages'>
+            <div class='resume_title'><span class="leftBlock"></span><label class="titleText">语言能力</label></div>
+			<dd >
+            	<table >
+				<foreach name="languages" item="vo">
+					<tr><th>外语语种：</th><td>{$vo.language}</td><th>读写能力：</th><td>{$vo.read_write}</td><th>听说能力：</th><td>{$vo.spoken}</td></tr>
+				</foreach>
+				</table>
+            </dd>
+            </notempty>
+            <notempty name='certificates'>
+            <div class='resume_title'><span class="leftBlock"></span><label class="titleText">证书</label></div>
+			<dd >
+            	<table >
+				<foreach name="certificates" item="vo">
+					<tr><th>证书类别：</th><td>{$vo.cetype}</td><th>证书名称：</th><td>{$vo.cename}</td></tr>
+				</foreach>
+				</table>
+            </dd>
+            </notempty>
+            <notempty name='papers'>
+            <div class='resume_title'><span class="leftBlock"></span><label class="titleText">论文</label></div>
+			<dd >	
+            	<table>
+				<foreach name="papers" item="vo">
+					<tr><th>论文题目：</th><td colspan='3'>{$vo.paper_title}</td></tr>
+					<tr><th>发表日期：</th><td>{$vo.public_date}</td><th>发表刊物：</th><td>{$vo.journal}</td></tr>
+					<tr><th>备注：</th><td>{$vo.remark}</td></tr>
+				</foreach>
+				</table>	
+            </dd>
+            </notempty>
+            <notempty name='tasks'>
+            <div class='resume_title'><span class="leftBlock"></span><label class="titleText">课题</label></div>
+			<dd >	
+            	<table>
+				<foreach name="tasks" item="vo">
+					<tr><th>项目名称：</th><td colspan='3'>{$vo.task_name}</td></tr>
+					<tr><th>立项机构：</th><td>{$vo.org}</td></tr>
+					<tr><th>立项日期：</th><td>{$vo.pro_date}</td><th>排名：</th><td>{$vo.ranking}</td></tr>
+				</foreach>
+				</table>	
+            </dd>
+            </notempty>
+            <notempty name='rewards'>
+            <div class='resume_title'><span class="leftBlock"></span><label class="titleText">奖励</label></div>
+			<dd >
+            	<table>
+				<foreach name="rewards" item="vo">
+					<tr><th>奖励名称：</th><td colspan='3'>{$vo.rewards_name}</td></tr>
+					<tr><th>授奖单位：</th><td>{$vo.rewards_unit}</td><th>授奖时间：</th><td>{$vo.rewards_date}</td></tr>
+				</foreach>
+				</table>
+            </dd>
+            </notempty>
+            <notempty name='accessorys'>
+            <div class='resume_title'><span class="leftBlock"></span><label class="titleText">附件</label></div>
+			<dd >
+            	<table>
+				<foreach name="accessorys" item="vo">
+					<tr><th>附件名称：</th><td colspan='3'><a href='__APP__/{$vo.src}' target='_blank'>{$vo.src}</a></td>
+					<th>附件描述：</th><td>{$vo.description}</td></tr>
+				</foreach>
+				</table>
+            </dd>
+            </notempty>
+		</dl>
+	</div>
+	<!--endprint-->
+</body>
+<script type='text/javascript'>
+	/**
+ * 打印指定标记之间的html内容
+ */
+function preview()
+{
+	bdhtml=window.document.body.innerHTML; 
+	sprnstr="<!--startprint-->"; 
+	eprnstr="<!--endprint-->"; 
+	prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17); 
+	prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr)); 
+	window.document.body.innerHTML=prnhtml; 
+	window.print();  
+	window.document.body.innerHTML = bdhtml;
+	location.reload();
+}
+</script>
+</html>

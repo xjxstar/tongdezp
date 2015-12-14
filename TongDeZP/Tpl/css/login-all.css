@@ -1,0 +1,34 @@
+body { margin:0 auto; font-size:13px; font-family:Verdana; line-height:1.5; color:#333}
+ul,ol,dl,dd,li,h1,h2,h3,h4,h5,h6,form,p { padding:0; margin:0; list-style:none}
+a{ line-height:32px; display:inherit;#display:block;_display:block; text-decoration:none}
+.f_f00{ color:#f00} 
+
+#srh_con { height:286px; padding:15px 0 0 27px;width:250px}
+#srh_con dl { height:60px; +height:57px; overflow:hidden; font-size:14px}
+#srh_con dl dd { padding:2px 0}
+#srh_con tt { display:block;width:200px}
+#srh_con h2 { font-size:16px; margin-bottom:11px}
+
+#regnow{background-position:0 -39px;}
+.login-btn{width:106px; height:32px; font-family:"微软雅黑",Verdana; text-align:center; color:#fff; border:none;background:url(../images/login-icon.png) no-repeat -50% 0%; cursor:pointer;}
+.reg_text { width:160px; height:26px; padding:0px 0 0 5px; line-height:25px; border-top:1px solid #aaa; border-left:1px solid #aaa; border-right:1px solid #ddd; border-bottom:1px solid #ddd; font-size:14px; font-family:Verdana}
+.error{color:Red; padding-left:3px; font-size:12px}
+.clearfloat {clear:both;height:0;font-size: 1px;line-height: 0px}
+.l{ margin-top:20px}
+
+#csdnshield { position:absolute; z-index:101px; left:0px; top:0px; display:block; background-color:#999; width:100%}
+#csdnload { position:absolute; z-index:102px; padding:4px 0px 0px 10px; font-family:Arial; font-size:14px; color:#000; font-weight:bold; overflow:hidden; border:solid 1px #777; background-color:#999; filter:alpha(opacity=70);opacity:0.7; margin:0px auto}
+
+#infoBox{position:absolute; top:150px; width:100%; text-align:center}
+#info{padding:0; margin:0;position:relative; top:-40%; right:0; border:0px #B4E0F7 solid; text-align:center}
+#info a {color:#195cb5; text-decoration:none}
+#info a:hover { color:#f00}
+#info p{margin:0 auto;width:320px;padding-top:4px;line-height:26px;height:26px;font-weight:bold;color:#2259A6;font-size:14px;border:1px #80B351 solid;background:#EAF8D7}
+#info div{padding:20px 0;margin:0 auto;width:320px;font-size:12px;background:#FFF;border-right:1px #80B351 solid;border-bottom:1px #80B351 solid;border-left:1px #80B351 solid}
+
+.personalInfo{ clear:left; margin-bottom:11px; width:240px}
+.personalInfo .w1{ width:129px; float:left}
+.personalInfo span{ line-height:28px}
+.personalInfo p{margin-left:56px; padding:3px 0}
+.pic{border:1px solid #e6e6e6;float:left;display:inline;background:#fff}
+.pic img{width:80px;height:80px; margin:2px}

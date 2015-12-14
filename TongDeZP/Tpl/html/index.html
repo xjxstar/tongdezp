@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>浙江省立同德医院招聘系统</title>
+<meta content="initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes, width=device-width" name="viewport">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<link href='__CSS__/bootstrap.min.css' rel='stylesheet'/>
+<include file='Tpl/html/common/common_css_js.html'/>
+<script type='text/javascript' src='__JS__/csdn.js'></script>
+<script type='text/javascript' src='__JS__/login.js'></script>
+<link href='__CSS__/login-all.css' rel='stylesheet'/>
+<style>
+	*{
+		box-sizing: content-box;
+	}
+</style>
+</head>
+<body>
+	<include file='Tpl/html/common/header.html'/>
+	<!-- <div id="wrap">
+    	<div id="container">
+        		<div id='reg'>
+					<div id="reg_con"><h2 style='font-weight:500;'>用户登录</h2>
+					<form id='form1' action='#' method='post' name='form1'>
+					    <div id="srh_con">
+					        <dl><dd>用户：<span class="f_f00">*</span><span id="u_error" class="f_f00"></span></dd>
+					        <dt><input style="color: rgb(153, 153, 153);" id="u" class="reg_text" maxlength="50" type="text" placeholder='邮箱'></dt></dl>
+					        <dl><dd>密码：<span class="f_f00">*</span></dd>
+					        <dt><input id="p" class="reg_text" maxlength="20" type="password"> </dt></dl>
+					        <dl><dd><input id="aLogin" class="login-btn" onclick="javascript:void(0);" value="登录" tabindex="4" type="button"></dd></dl>
+					    </div>
+	    			</form>
+				</div>
+				<div id="reg_other"><ul><li>如果你还不是注册用户，请先使用邮箱地址注册账户。</li>
+					<li><a id="regnow" href="__URL__/Login/showRegister" class="login-btn reg_btn" target="_top">注册</a></li>
+					<li><a href="__URL__/Login/resetPwd" style='display:inline-block;'>忘记密码</a>，可以使用你注册的邮箱重置。</li></ul></div>
+				</div>
+		</div>
+	</div> -->
+	<div  id="container">
+		<div class='outcontainer' style='border:1px solid #ccc;min-height:380px;'>
+			<div class='login'>
+				<h2>用户登录</h2>
+				<div class='form_box'>
+					<form id='form1' action='#' method='post' name='form1'>
+					<ul>
+						<li><span><label>用户名：</label><input class='ologin_text' type='text' id='u' placeholder='邮箱'/></span></li>
+						<li><span><label>密码：</label><input class='ologin_text' id='p' type='password'/></span><small><a href="__URL__/Login/resetPwd">忘记密码</a></small></li>
+						<li><label>用户类型：</label><input type='radio' name='role' value='1' checked>应聘者<input type='radio' name='role' value='2'>管理员</li>
+						<div id='errorMsg'></div>
+						<li><span><input type='button' id='aLogin'  value='登&nbsp;&nbsp;录'/></span><small>没有账号，<a href="__URL__/Login/showRegister" style='margin-left:0px;'>立即注册</a></small></li>
+					</ul>
+					</form>
+				</div>
+				<div class='split'></div>
+			</div>
+			<div class='notice'>
+				<h2>通知公告</h2>
+				<div class='content'>
+					<volist name='notices' id='notice'>
+						<em><a href='__URL__/Notice/showNotice/id/{$notice.id}' ><label>{$notice.title}</label><span>{$notice.public_time|date = "Y年m月d",###}</span></a></em>
+					</volist>
+					<if condition='$count gt 7'><div class='more'><a href='__URL__/Notice/moreNotice'>更多>></a></div>
+					</if>
+				</div>
+			</div>
+		</div>
+	</div>
+	<include file="Tpl/html/common/foot.html"/>
+</body>
+</html>

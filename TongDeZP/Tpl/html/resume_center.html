@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>浙江省立同德医院招聘系统</title>
+<meta content="initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes, width=device-width" name="viewport">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<link href='__CSS__/bootstrap.min.css' rel='stylesheet'/>
+<link href='__CSS__/layout.css' rel='stylesheet'/>
+<link href='__CSS__/login-all.css' rel='stylesheet'/>
+<link href='__CSS__/base.css' rel='stylesheet'/>
+<link href='__CSS__/arrowsandboxes.css' rel='stylesheet'/>
+<script type='text/javascript' src='__JS__/jquery.js'></script>
+<style>
+	* {
+    	box-sizing: content-box;
+	}
+</style>
+</head>
+<body>
+<include file='Tpl/html/common/header.html'/>
+<div id="wrap">
+  <div id="container">
+	<div id="side">
+		<div id="help_nav">
+		    <h2><span style="background:url(/help/images/icon2.gif) 0 center no-repeat">欢迎您的登录</span></h2>
+		    <img alt="u" src="__IMG__/pic1.gif" /><br /><br /><br /><div class="clearfloat"></div>
+		    <h2 style='font-weight:600'>密码修改<hr class='title-hr'></hr></h2>
+		    <ul>
+			    <li>老密码</li><li><input id="po" type="password" maxlength="20" /></li>
+			    <li>新密码</li><li><input id="pn1" type="password" maxlength="20" /></li>
+			    <li>确认密码</li><li><input id="pn2" type="password" maxlength="20" /></li>
+			    <li></li> <li><input id="cps" type="button" value="提交" /></li>
+		    </ul>
+	    </div>
+	</div>
+	<div id="main">
+	    <div id="help_top">
+	      <h1><label class="float-left">我的账号</label></h1>
+	      <h3>邮箱地址：<?php echo $_SESSION['user']['email'];?><br />登陆时间：<?php echo date('Y-m-d H:i:s',$_SESSION['user']['last_login_time']);?><br/>
+	      		<strong style='font-size:16px;color:red;line-height:30px;'>应聘状态：{$status}</strong>
+	      </h3>
+	      <ul>
+	      <li id="icon11"><a href="__URL__/ResumeManage/resumeFill"><strong>简历填写</strong>填历并保存简历信息</a></li>
+	        <li id="icon12"><a href="__URL__/ResumeManage/resumePreview" target="_blank"><strong>简历预览</strong>查看预览保存的简历</a></li>
+	        </ul></div>
+	    <div class="main_box" >
+	      <div class="box_con liucheng"><script type="text/javascript" src="http://zp.z2hospital.com/web-assets/script/jquery.wz_jsgraphics.js"></script><script type="text/javascript" src="http://zp.z2hospital.com/web-assets/script/arrowsandboxes.js"></script><link rel="stylesheet" href="http://zp.z2hospital.com/web-assets/style/arrowsandboxes.css" type="text/css" />
+	          <dl><dt><strong>网上招聘流程</strong></dt>
+	          <dd>我院各个岗位的需求信息及要求将在招聘系统网站首页的“岗位需求”中公布，各位求职者需要注册招聘系统并且填写简历，直接在网站中进行求职。</dd>
+	          <dd style='over-flow:hidden;'><pre class="arrows-and-boxes" >
+	          ((注册登录))>> ((查看岗位需求))>> ((填写简历>>[y])) || 
+	          ((等候考试通知>>[x]))<< ((资格审核)) << ((y:提交简历))
+	         ||((x:入围者体检))>> ((考核)) >> ((公示、录用))
+	         </pre></dd></dl>
+	          <div class="zhxx">文字说明</div><div class="neirong">1.填写简历前请先查看岗位需求。<br />2.点击“填写简历”，请完整填写简历的各项内容并保存。<br />3.提交简历，提交的简历为最后保存的简历信息。<br />4.资格审核通过者，请等待医院笔试通知，参加考试前需要在考试管理中打印准考证。<br />5. 考试管理功能中可查询笔试、面试成绩。<br />6. 请保持通讯电话信息有效，并留意查看招聘网、手机短息及邮箱，以查收应聘状态信息。</div><div class="zhxx">友情提示</div><div class="neirong">为了确保我院审核过程的真实性和有效性，请应聘者务必如实详细地填写个人简历信息。</div>
+	      </div>
+	    </div>
+	</div>
+	</div>
+	</div>
+	<include file="Tpl/html/common/foot.html"/>
+	<script>
+	$("#cps").click(function(){
+		$('#help_nav ul input[type="password"]').each(function(){
+			if($(this).val()==''){
+				$(this).css('border','1px solid red');
+				alert('请输入'+$(this).parent().prev().html());
+				return;
+			}else{
+				$(this).css('border','1px solid #333');
+			}
+		});
+		if($('#pn1').val()!=$('#pn2').val()){
+			alert('两次输入的密码不一致');
+			return;
+		}
+		var prePwd = $('#po').val();
+		var newPwd = $('#pn1').val();
+		$.ajax({
+			data:{prePwd:prePwd,newPwd:newPwd},
+			type:'post',
+			url:'__URL__/Login/changePwd',
+			success:function(data){
+				if(data==-1){
+					alert('原密码输入错误,请重试');
+				}else if(data==1){
+					alert('密码修改成功');
+					location.reload();
+				}
+			}
+		})
+	});
+	</script>
+</body>
+</html>

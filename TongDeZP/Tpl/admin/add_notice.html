@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link href='__CSS__/miniui.css' rel='stylesheet' type='text/css'/>
+<link href='__CSS__/umeditor.min.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='__JS__/jquery.js'></script>
+<script type='text/javascript' src='__JS__/umeditor.min.js'></script>
+<script type='text/javascript' src='__JS__/umeditor.config.js'></script>
+<script type='text/javascript' src='__JS__/zh-cn.js'></script>
+<style type='text/css'>
+	span{
+		display:block;margin-bottom:10px;line-height:22px;
+	}
+	span label{
+		width:100px;float:left;
+	}
+	span input,span textarea{
+		width:280px;
+	}
+	.error{
+		width:80px;
+		color:red;
+		float:right;
+	}
+</style>
+</head>
+<body style="margin:0px;padding:0px;overflow-y:hidden;position:relative;display:block;height:100%;">
+	<div style="margin:10px 0px 10px 30px;">
+		<form action='__URL__/Recruit/saveRecruit' method='post' id='recruitForm'> 
+		<span>
+			<label>通知公告标题：</label>
+			<input type='text' value='{$notice.title}' name='title' id='title'>
+		</span>
+		<label>通知公告内容：</label>
+		<span>	
+			<!--<textarea name='content' lang='en' id='content' style='height:80px;'>{$notice.content	}</textarea>-->
+			<script type="text/plain" id="content" style="width:500px;height:100px;">
+			    <p>{$notice.content}</p>
+			</script>
+		</span>
+		<input type='hidden' name='id' id='id'  value='{$notice.id}'/>
+ 		</form>
+	</div>
+	<div style="text-align:center;padding:10px;">               
+           <a class="mini-button" onclick="onOk()" style="width: 60px; height:24px;margin-right: 20px;"><span class="mini-button-text " style="">确定</span></a>       
+           <a class="mini-button" onclick="onCancel()" style="width: 60px;height:24px;"><span class="mini-button-text " style="">取消</span></a>       
+     </div>
+</body>
+<script>
+var um = UM.getEditor('content');
+setTimeout(function(){
+	$('#content').css('height','200px');
+},100)
+function onOk() {
+	var title = $('#title').val();
+	var content = um.getContent();
+	if(title==''){
+		$('<span class="error">不能为空</span>').insertAfter($('#title'));
+		return;
+	}else{
+		$('#title').next().empty();
+	}
+	if(content==''){
+		$('<span class="error">不能为空</span>').insertAfter($('#content'));
+		return;
+	}else{
+		$('#content').next().empty();
+	}
+	var id = $('#id').val();
+	$.ajax({
+		url:'__URL__/Notice/saveNotice',
+		data:{title:title,content:content,id:id},
+		type:'post',
+		success:function(){
+			alert('通知公告发布成功');
+			CloseWindow("ok");
+		},error:function(){
+			alert('服务器异常，请刷新重试');
+		}
+	})
+}
+function onCancel() {
+    CloseWindow("cancel");
+}
+function CloseWindow(action) {
+    if (window.CloseOwnerWindow) return window.CloseOwnerWindow(action);
+    else window.close();
+}
+</script>
+</html>

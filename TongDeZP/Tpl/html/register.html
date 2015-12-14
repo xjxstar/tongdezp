@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>浙江省立同德医院招聘系统</title>
+<meta content="initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes, width=device-width" name="viewport">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<link href='__CSS__/bootstrap.min.css' rel='stylesheet'/>
+<include file='Tpl/html/common/common_css_js.html'/>
+<script type='text/javascript' src='__JS__/register.js'></script>
+<script type='text/javascript' src='__JS__/csdn.js'></script>
+<link href='__CSS__/login-all.css' rel='stylesheet'/>
+</head>
+<body>
+	<include file='Tpl/html/common/header.html'/>
+	<div id="wrap">
+    	<div id="container">
+        	<div id="mainContent">
+        		<div id='reg'>
+	        		<div id="reg_con"><h2 style='font-weight:500'>立即注册</h2>
+	        			<form action='__URL__/Login/register' method='post' id='register' >
+							<ul><li>注册邮箱: <input name="regEmail" id="em" class="reg_text" type="text"></li>
+							<li>创建密码: <input maxlength="20" name="pwd" id="p1" class="reg_text" type="password"></li>
+							<li>确认密码: <input maxlength="20" name="pwd" id="p2" class="reg_text" type="password"></li>
+							<li>真实姓名: <input name="name" id="un" class="reg_text" type="text"></li>
+							<li><label style='width:62px;'>性别:</label> <label><input name="gender" id="male" value="男" checked="checked" type="radio">男</label><label><input name="gender" id="female" value="女" type="radio">女</label></li>
+							<li><input id="aReg" class="login-btn reg_btn" onclick="void(0);" value="立即注册" type="submit" style='background-position:0% 0%;'></li></ul></div>
+							<div id="reg_other"><ul><li>请先使用邮箱地址注册账户(此邮箱是用来接受HR方的来信，包括取回密码)；如果你已经注册用户，请先登录。</li>
+							<li><a id="regnow" href="__URL__" class="login-btn reg_btn" style='width:auto' target="_top">登录</a></li><li><a href="__URL__/Login/resetPwd" style='display:inline-block'>忘记密码</a>，可以使用你注册的邮箱重置。</li></ul></div>
+	        			</form>
+	        		</div>
+	        	</div>
+        </div>
+     </div>
+</body>

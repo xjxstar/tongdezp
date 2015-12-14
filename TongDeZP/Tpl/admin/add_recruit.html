@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link href='__CSS__/miniui.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='__JS__/jquery.js'></script>
+<style type='text/css'>
+	span{
+		display:block;margin-bottom:10px;line-height:22px;
+	}
+	span label{
+		width:100px;float:left;
+	}
+	span input,span textarea{
+		width:250px;
+	}
+	.error{
+		width:150px;
+		color:red;
+		float:right;
+	}
+</style>
+</head>
+<body style="margin:0px;padding:0px;overflow-y:hidden;position:relative;display:block;height:100%;">
+	<div style="margin:10px 0px 10px 30px;">
+		<form action='__URL__/Recruit/saveRecruit' method='post' id='recruitForm'> 
+		<span>
+			<label>部门或岗位：</label>
+			<input type='text' value='{$recruit.position}' name='position'>
+		</span>
+		<span>
+			<label>岗位代码：</label>
+			<input type='text' value='{$recruit.depart_code}' name='depart_code'>
+		</span>
+		<span >
+			<label >人数：</label>
+			<input type='text' value='{$recruit.needed}' name='needed'>
+		</span>
+		<span >
+			<label >招聘对象：</label>
+			<input type='text' value='{$recruit.target}' name='target'>
+		</span>
+		<span >
+			<label >年龄上限：</label>
+			<input type='text' value='{$recruit.age_upper}' name='age_upper'>
+		</span>
+		<span >
+			<label>专业：</label>
+			<input type='text' value='{$recruit.major}' name='major'>
+		</span>
+		<span >
+			<label>学历学位：</label>
+			<input type='text' value='{$recruit.education}' name='education'>
+		</span>
+		<span >
+			<label>职称或职业资格：</label>
+			<input type='text' value='{$recruit.jobtitle}' name='jobtitle'>
+		</span>
+		<span>	
+			<label>备注：</label>
+			<textarea name='remark' lang='en'>{$recruit.remark}</textarea>
+		</span>
+		<span>
+			<label>考试科目：</label>
+			<input name='test_subject' type='text' value='{$recruit.test_subject}'/>
+		</span>
+		<input type='hidden' name='id' id='id'  value='{$recruit.id}'/>
+ 		</form>
+	</div>
+	<div style="text-align:center;padding:10px;">               
+           <a class="mini-button" onclick="onOk()" style="width: 60px; height:24px;margin-right: 20px;"><span class="mini-button-text " style="">确定</span></a>       
+           <a class="mini-button" onclick="onCancel()" style="width: 60px;height:24px;"><span class="mini-button-text " style="">取消</span></a>       
+     </div>
+</body>
+<script>
+function onOk() {
+	var flag = true;
+	var params = '';
+	$('input[type="text"]').each(function(){
+		$(this).next().remove();
+		if($(this).attr('name')=='needed'){
+			params =params + $(this).attr('name')+':'+$(this).val()+',';
+			if(!$(this).val().match(/[0-9]+/)){
+				$('<span class="error">请输入数字</span>').insertAfter($(this));
+				flag =false;
+			}
+		}else{
+			params =params + $(this).attr('name')+':'+$(this).val()+',';
+		}
+	})
+	if(!flag){
+		return;
+	}
+	params += $("#recruitForm textarea").attr('name')+':'+ $("#recruitForm textarea").val()
+	+','+ $('#id').attr('name')+':'+$('#id').val();
+	$.ajax({
+		url:'__URL__/Recruit/saveRecruit',
+		data:{params:params},
+		type:'post',
+		success:function(){
+			alert('招聘信息发布成功');
+			CloseWindow("ok");
+		},error:function(){
+			alert('服务器异常，请刷新重试');
+		}
+	})
+}
+function onCancel() {
+    CloseWindow("cancel");
+}
+function CloseWindow(action) {
+    if (window.CloseOwnerWindow) return window.CloseOwnerWindow(action);
+    else window.close();
+}
+</script>
+</html>

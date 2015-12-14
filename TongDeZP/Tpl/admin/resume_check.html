@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script src='__JS__/jquery.js' type='text/javascript'></script>
+<link href='__CSS__/miniui.css' rel='stylesheet' type='text/css'/>
+</head>
+<body style="margin:0px;padding:0px;overflow-y:hidden;">
+	<div style="margin:10px;">
+		<span style="display:block;margin-bottom:10px;">
+			<if condition='$status eq 5'><label style='text-align:left;width:120px;float:left'>上次审核不通过理由：</label><else/><label style='text-align:left;width:120px;float:left'>审核不通过理由：</label></else></if>
+			<textarea  value='{$remark}' name='remark'  cols='30' rows='3' id='remark' style='display:block'></textarea>
+		</span>
+		<div style='clear:both'></div>
+		<span style="display:block;margin-bottom:10px;height:22px;">
+			<label style='text-align:left;width:120px;float:left'>允许应聘者重新填写：</label>
+			<select name='rewrite' id='rewrite'>
+				<option value='1'>是</option>
+				<option value='2'>否</option>
+			</select>
+		</span>
+	</div>
+	<div class="mini-toolbar" style="text-align:center;padding-top:8px;padding-bottom:8px;margin-top:25px;" 
+        borderStyle="border-left:0;border-bottom:0;border-right:0;">
+        <a class="mini-button" style="width:80px;" onclick="onOk()">审核通过</a>
+        <span style="display:inline-block;width:25px;"></span>
+        <a class="mini-button" style="width:80px;" onclick="onCancel()">审核不通过</a>
+        <span style="display:inline-block;width:25px;"></span>
+        <a class="mini-button" style="width:80px;" onclick="CloseWindow()">关闭</a>
+    </div>
+</body>
+<script>
+$('#remark').val('{$remark}');
+var userId = '{$userId}'
+function onOk() {
+	$.ajax({
+		url:'__URL__/ResumeManage/passCheck',
+		type:'post',
+		data:{userId:userId},
+		success:function(){
+			alert('审核成功');
+			CloseWindow("cancel");
+		},error:function(){
+			alert('服务器异常，请刷新后重试')
+		}
+	});
+}
+function onCancel() {
+	var remark = $('#remark').val()
+	if(remark ==''){
+		alert('审核不通过请写明理由');
+		return;
+	}
+	var rewrite = $('#rewrite').val();
+	$.ajax({
+		url:'__URL__/ResumeManage/checkNoPass',
+		data:{remark:remark,userId:userId,rewrite:rewrite},
+		type:'post',
+		success:function(){
+			alert('审核成功');
+			CloseWindow("cancel");
+		},error:function(){
+			alert('服务器异常，请刷新后重试')
+		}
+	});
+}
+function CloseWindow(action) {
+    if (window.CloseOwnerWindow) return window.CloseOwnerWindow(action);
+    else window.close();
+}
+</script>
+</html>

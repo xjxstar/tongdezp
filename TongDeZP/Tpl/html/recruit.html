@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>浙江省立同德医院招聘系统</title>
+<meta content="initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes, width=device-width" name="viewport">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<link href='__CSS__/bootstrap.min.css' rel='stylesheet'/>
+<link href='__CSS__/layout.css' rel='stylesheet'/>
+<link href='__CSS__/base.css' rel='stylesheet'/>
+<script type='text/javascript' src='__JS__/jquery.js'></script>
+<style>
+	table tbody tr td{
+		font-weight:normal;
+	}
+</style>
+</head>
+<body>
+	<include file='Tpl/html/common/header.html'/>
+	<div id='container'>
+		<div class="panel panel-info">
+	  <div class="panel-heading" style='font-size:16px;text-align:center'>浙江省立同德医院招聘岗位表</div>
+	  <div class="panel-body" style='min-height:360px;'>
+	    <table class="table table-hover table-bordered" >
+	    	<thead><tr><th width='8%'>部门或岗位</th><th width='8%'>所在院区</th><th width='8%'>岗位类别</th><th width='8%'>岗位代码</th><th width='8%'>需求人数</th><th width='8%'>招聘对象</th><th width='8%'>年龄上限</th><th width='8%'>专业</th><th width='8%'>学历学位</th><th width='8%'>职称</th><th width='12%'>备注</th><th width='8%'>考试科目</th></tr></thead>
+	    	<tbody>
+	    	<foreach name="recruits" item="vo">
+			    <tr><td>{$vo.position}</td><td>{$vo.area}</td><td>{$vo.ptype}</td><td>{$vo.depart_code}</td><td>{$vo.needed}</td><td>{$vo.target}</td><td>{$vo.age_upper}</td><td>{$vo.major}</td><td>{$vo.education}</td><td>{$vo.jobtitle}</td><td>{$vo.remark}</td><td>{$vo.test_subject}</td></tr>
+			</foreach>
+			</tbody>
+		</table>
+	  </div>
+		</div>
+	</div>
+	<include file="Tpl/html/common/foot.html"/>
+</body>
+</html>

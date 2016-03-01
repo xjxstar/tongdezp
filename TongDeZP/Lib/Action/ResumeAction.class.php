@@ -131,7 +131,7 @@
                     ->where($paramsArr)->select();
                 $count = count($data);
                 $pageStart = ($pageIndex-1)*$pageSize;
-                $pageEnd = $pageStart + $pageSize;
+                $pageEnd = $pageSize;
                 if($count>10){
                     //需要分页
                     $data = array_slice($data, $pageStart,$pageEnd);
@@ -179,13 +179,12 @@
             }else{
                 $paramsArr['status'] = array('gt',0);
             }
-            set_time_limit(0);
             $data = M('personal_information pi')
                 ->join('left join zhaopin on zhaopin.id = pi.zhaopin_id')
                 ->join('left join education on (pi.user_id = education.user_id and pi.education = education.education)')
                 ->join('left join job on pi.user_id = job.user_id' )
-                ->field('name,gender,nation,native_place,card_no,position,depart_code,current,max(job.jobtitle) as jobtitle,
-                    pi.education,education.major,train,education.school,job.workon,link1,status,pi.remark')
+                ->field('pi.user_id,name,gender,nation,native_place,card_no,position,depart_code,current,max(job.jobtitle) as jobtitle,
+                    pi.education,education.major,train,education.school,job.workon,link1,status,pi.remark,pi.submit_time')
                 ->group('pi.user_id')
                 ->order('null')
                 ->where($paramsArr) 
@@ -201,11 +200,13 @@
                 $data[$i]['native_place'] = str_replace(array('直辖市','市辖区','|区|','|县|','|市|','|','请选择'),'',$data[$i]['native_place']);
                 $data[$i]['card_no'] = $data[$i]['card_no'];
                 $data[$i]['jobtitle'] = jobTitleToString($data[$i]['jobtitle']);
+                if($data[$i]['submit_time'])$data[$i]['submit_time'] = date('Y-m-d H:i:s',$data[$i]['submit_time']);
             }
-            $ths = '姓名,性别,民族,籍贯,身份证号码,应聘科室,岗位代码,应/往届,职称,学历学位,专业,培养方式,'.
-                '毕业院校,工作单位,联系方式,审核状态,审核备注';
+            $ths = '应聘者编号,姓名,性别,民族,籍贯,身份证号码,应聘科室,岗位代码,应/往届,职称,学历学位,专业,培养方式,'.
+                '毕业院校,工作单位,联系方式,审核状态,审核备注,提交时间';
             $titles = explode(',',$ths);
             $filename ='应聘人员信息';
+            set_time_limit(0);
             D('Common')->exportExcel($data,$titles,$filename);
         }
         
@@ -216,7 +217,7 @@
             $pageIndex = isset($_REQUEST['pageIndex'])?$_REQUEST['pageIndex']:'';
             $pageSize = isset($_REQUEST['pageSize'])?$_REQUEST['pageSize']:'';
             $key = isset($_REQUEST['key'])?$_REQUEST['key']:'';
-            $data = D('PersonalInfo')->getExamPersonalInfo($pageIndex,$pageSize,$key);
+            $data = D('PersonalInfo')->getExamPersonalInfo($pageIndex+1,$pageSize,$key);
             exit(json_encode($data));
         }
         public function savePosition(){

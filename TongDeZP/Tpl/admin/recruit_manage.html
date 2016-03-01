@@ -96,18 +96,7 @@ var grid = mini.get("datagrid1");
 grid.load();
 var params = '';
 function search() {
-	$('#search_table tbody tr td select').each(function(){
-		var name = $(this).attr('name');
-		if((name=='work_ym'||name=='politics_status')&&$(this).val()!=0){
-			params = params + $(this).attr('name')+':'+$(this).val()+',';
-		}else if($(this).val()!=0){
-			params = params + $(this).attr('name')+':'+$(this).find('option[value='+$(this).val()+']').html()+',';	
-		}
-	});
-    var name = mini.get("key").getValue();
-    if(name){
-    	params ="name:"+name+',';
-    }
+    var key = mini.get("key").getValue();
     grid.load({ key: key});
 }
 function onKeyEnter(e) {

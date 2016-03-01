@@ -9,11 +9,14 @@
             exit($count);
         }
         public function register(){
-            $email = $_POST['regEmail'];
-            $pwd = $_POST['pwd'];
-            $name = $_POST['name'];
+            $email = addslashes($_POST['regEmail']);
+            $pwd = addslashes($_POST['pwd']);
+            $name = addslashes($_POST['name']);
             $gender = $_POST['gender'];
             $password = md5('Aa1@_'.$pwd);
+            if(!$email || !$pwd || !$name){
+                exit('非法注册');
+            }
             $where['email'] = $email;
             $where['password'] = $password;
             $where['last_login_time'] = time(); 
@@ -28,14 +31,17 @@
             redirect('../ResumeManage');
         }
         public function login(){
-            $username = $_POST['username'];
-            $pwd = $_POST['pwd'];
+            $username = addslashes($_POST['username']);
+            $pwd = addslashes($_POST['pwd']);
             $pwd = md5('Aa1@_'.$pwd);
+            if(!$username || !$pwd){
+                $this->ajaxReturn('','登录失败，参数错误',0);
+            }
             $where['email'] = $username;
             $where['password'] = $pwd;
             $user = M('user')->where($where)->find();
             if(is_null($user)){
-                exit('0');
+                $this->ajaxReturn('','登录失败，用户名或密码错误1',0);
             }else{
                 $ip = $_SERVER['REMOTE_ADDR'];
                 $loginTime = time();
@@ -45,7 +51,7 @@
                 $name = M('personal_information')->where('user_id='.$user['id'])->getField('name');
                 $_SESSION['user'] = $user;
                 $_SESSION['user']['name'] = $name;
-                exit('1');
+                $this->ajaxReturn('','',1);
             }
         }
         public function loginout(){

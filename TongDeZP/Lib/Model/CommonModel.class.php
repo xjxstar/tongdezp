@@ -138,6 +138,13 @@
             }
             return $mail->Send() ? true : $mail->ErrorInfo;
         }
+
+        /**
+         * @param 文件 $file
+         * @return Exel 内容 array
+         * @throws PHPExcel_Exception
+         * @throws PHPExcel_Reader_Exception
+         */
         public function importExcel($file){
             if(!file_exists($file)){
                 return array("error"=>0,'message'=>'file not found!');

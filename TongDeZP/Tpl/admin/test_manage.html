@@ -47,13 +47,20 @@
 	            <div  field="type"  headerAlign="center"  width="100" >考试类型
 	                <input property="editor"  class="mini-textbox" style="width:100%;" />
 	            </div>
-	             <div name="exam_time" field="exam_time" width="100" allowSort="true" dateFormat="yyyy-MM-dd HH:mm:ss">考试时间
+	             <div name="exam_time" field="exam_starttime" width="100" allowSort="true" dateFormat="yyyy-MM-dd HH:mm:ss">考试开始时间
 	                <input property="editor" class="mini-datepicker" style="width:100%;" format="yyyy-MM-dd H:mm:ss" timeFormat="H:mm:ss" showTime="true" showOkButton="true" showClearButton="false"/>
-	            </div>       
+	            </div>
+				<div name="exam_time" field="exam_endtime" width="100" allowSort="true" dateFormat="yyyy-MM-dd HH:mm:ss">考试结束时间
+					<input property="editor" class="mini-datepicker" style="width:100%;" format="yyyy-MM-dd H:mm:ss" timeFormat="H:mm:ss" showTime="true" showOkButton="true" showClearButton="false"/>
+				</div>
 	        </div>
 	 </div>
 	 <div style='clear:both'></div>
-	 <div class="top-tip" ><span id='roomName'></span>考点考试人员信息表</div>
+	 <div class="top-tip" ><span class='roomName'></span>考点考试人员信息表</div>
+		<span>Excel上传<label class='roomName'></label>考点考试人员信息：<input type='file' style='border:1px solid #ccc;display:inline-block;' id='testExcel' name='testExcel'/><input type='button' value='上传' onclick='ajaxFileUpload();' style='display:inline-block;width:60px;'/>
+			<a href='__URL__/ExamRoom/downloadExamUserTpl'>下载考试人员信息模板excel</a></span><br/>
+		<span>Excel上传<label class='roomName'></label>考点考试成绩信息：<input type='file' style='border:1px solid #ccc;display:inline-block;' id='gradeExcel' name='gradeExcel'/><input type='button' value='上传' onclick='uploadGrade();' style='display:inline-block;width:60px;'/>
+			<a href='__URL__/Admission/downloadGradeTpl'>下载考试成绩信息模板excel</a></span>
 	 <div style="width:100%;float:left;_width:80%;">
 	        <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
 	            <table style="width:100%;">
@@ -63,8 +70,8 @@
 	                        <a class="mini-button" iconCls="icon-add" href="javascript:addExamUser()">增加考试人员</a>          
 	                    </td>
 	                    <td style="white-space:nowrap;">
-	                        <input id="key" class="mini-textbox" emptyText="请输入姓名" style="width:150px;" onenter="onKeyEnter"/>   
-	                        <a class="mini-button" onclick="searchEmployee()">查询</a>
+	                        <input id="key" class="mini-textbox" emptyText="请输入姓名" style="width:150px;" />   
+	                        <a class="mini-button" onclick="searchExamUser()">查询</a>
 	                    </td>
 	                </tr>
 	            </table>           
@@ -86,9 +93,6 @@
 	            <div name="card_no"  field="card_no" headerAlign="center" width="140" readOnly='true' >身份证号
 	                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="140"  />
 	            </div>
-	            <div name="level"  field="level" headerAlign="center" width="70"  >报考级别
-	                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="70"  />
-	            </div>
 	            <div name="classroom"  field="classroom" headerAlign="center" allowSort="true" width="60" >考场
 	                <input  property="editor" class="mini-textbox" style="width:100%;" minWidth="60" />
 	            </div>
@@ -108,6 +112,7 @@
 	        </div>
 	    </div>
 </body>
+<script type='text/javascript' src='__JS__/ajaxfileupload.js' async='async'></script>
 <script>
 	mini.parse();
 	var examination_grid = mini.get("examination_grid");
@@ -160,19 +165,23 @@
         var grid = e.sender;
         var record = grid.getSelected();
         if (record) {
-        	$("#roomName").html(record.room_name);
+        	$(".roomName").html(record.room_name);
             examinee_grid.load({ room_id: record.id });
         }
     }
 	function addExamUser(){
 		var rows = examination_grid.getSelecteds();
 		var roomId = rows[0]['id'];
+		if(!roomId){
+			alert('请先新建并保存考点');
+			return;
+		}
     	mini.open({
 			url:'__URL__/Admin/addExamUser/roomId/'+roomId,
 			showMaxButton:false,
 			title:'请选择考试人员',
 			width:800,
-			height:400,
+			height:420,
 			ondestroy: function () { 
 					examinee_grid.reload();
 			}
@@ -270,5 +279,63 @@
     		})
     	}
     }
+    function searchExamUser(){
+    	var key = mini.get('key').getValue();
+    	examinee_grid.load({key:key});
+    }
+	function ajaxFileUpload() {
+		if($('#testExcel').val()==''){
+			alert('未选择文件');
+			return;
+		}
+		$.ajaxFileUpload
+		(
+				{
+					url: '../ExamRoom/exportExamUser', //用于文件上传的服务器端请求地址
+					secureuri: false, //是否需要安全协议，一般设置为false
+					fileElementId: 'testExcel', //文件上传域的ID
+					dataType: 'json', //返回值类型 一般设置为json
+					success: function (data)  //服务器成功响应处理函数
+					{
+ 						if(data==1){
+							alert('考点考试人员信息上传成功');
+							examinee_grid.reload();
+						}else{
+							alert(data);
+						}
+					},
+		            error: function (data, status, e)//服务器响应失败处理函数
+		            {
+		                alert(data.responseText);
+		            }
+				}
+		)
+		return false;
+	}
+	function uploadGrade() {
+		if($('#gradeExcel').val()==''){
+			alert('未选择文件');
+			return;
+		}
+		$.ajaxFileUpload
+		(
+				{
+					url: '../Admission/exportGrade', //用于文件上传的服务器端请求地址
+					secureuri: false, //是否需要安全协议，一般设置为false
+					fileElementId: 'gradeExcel', //文件上传域的ID
+					dataType: 'json', //返回值类型 一般设置为json
+					success: function (data)  //服务器成功响应处理函数
+					{
+						if(data==1){
+							alert('考点考试人员信息上传成功');
+							examinee_grid.reload();
+						}else{
+							alert(data.info);
+						}
+					},
+				}
+		)
+		return false;
+	}
 </script>
 </html>

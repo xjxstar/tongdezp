@@ -193,7 +193,8 @@ table tbody tr td{
 		float:left;
 	}
 	.tip-content{
-		line-height:22px;
+		line-height:18px;
+		font-size:12px;
 	}
 	
 	.test-part{

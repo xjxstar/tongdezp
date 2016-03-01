@@ -4,24 +4,27 @@
             $this->display();
         }
         public function login(){
-            $username = $_POST['username'];
-            $pwd = $_POST['pwd'];
+            $username = addslashes($_POST['username']);
+            $pwd = addslashes($_POST['pwd']);
+            if(!$username || !$pwd){
+                $this->ajaxReturn('','非法登陆',0);
+            }
             $pwd = md5('Aa1@_'.$pwd);
             $where['username'] = $username;
             $where['pwd'] = $pwd;
             $user = M('admin')->where($where)->find();
             if(is_null($user)){
-                /* $this->error='用户名或者密码错误';
-                $this->display('admin/index'); */
-                exit('-1');
+                $this->error='用户名或者密码错误';
+                $this->display('admin/index'); 
+                //$this->ajaxReturn('','用户名或密码错误',0);;
             }else{
                 $ip = $_SERVER['REMOTE_ADDR'];
                 $loginTime = time();
                 M('admin')->where($where)->setField(array('last_login_ip'=>$ip,'last_login_time'=>$loginTime));
                 $user = M('admin')->where($where)->find();
                 $_SESSION['admin'] = $user;
-                //redirect('home');
-                exit('1');
+                redirect('home');
+                //$this->ajaxReturn('','',1);
             }
         }
         public function loginout(){

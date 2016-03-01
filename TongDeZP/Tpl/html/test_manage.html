@@ -56,19 +56,19 @@
 		  <div class='admission' style='display:none'>
 		  	<div class='ad_left'>
 		  		<div class='left_container'>
-			  		<h4 style='text-align:center;margin-top:20px;'>2015年浙江省同德医院招聘考试准考证</h4>
+			  		<h4 style='text-align:center;margin-top:20px;'>2016年浙江省立同德医院公开招聘笔试准考证</h4>
 			  		<h3 style='text-align:center;margin:20px auto;'>准考证</h3>
 			  		<table >
 			  			<tr><td width='85'>姓名</td><td width='92'>{$personalInfo.name}</td><td width='55'>性别</td><td width='55'>{$personalInfo.gender}</td>
 			  				<td colspan='2' rowspan='3' width='110' height='140'><img src='../{$personalInfo.self_photo}' width='100%' ></img></td></tr>
 			  			<tr><td >准考证号</td><td colspan='3' >{$admission.admission_no}</td></tr>
-			  			<tr><td >报考级别</td><td colspan='3' >{$admission.level}</td></tr>
-			  			<tr><td >报考专业</td><td colspan='5' >{$major}</td></tr>
+			  			<tr><td >报考岗位</td><td colspan='3' >{$position.depart_code}</td></tr>
+			  			<tr><td >笔试科目</td><td colspan='5' >{$position.test_subject}</td></tr>
 			  			<tr><td >证件编号</td><td colspan='5' >{$personalInfo.card_no}</td></tr>
-			  			<tr><td >考试日期及时间</td><td colspan='5' >{$examRoom.exam_time}</td></tr>
+			  			<tr><td >考试时间</td><td colspan='5' >{$examRoom.exam_starttime}-{$examRoom.exam_endtime}</td></tr>
 			  			<tr><td >考场</td><td colspan='5'>{$examRoom.room_name}</td></tr>
 			  			<tr><td >考场地址</td><td colspan='5' >{$examRoom.room_address}</td></tr>
-			  			<tr><td >试室</td><td colspan='3'>{$admission.classroom}</td><td width='50'>座位号</td><td>{$admission.seat}</td></tr>
+			  			<tr><td >教室</td><td colspan='3'>{$admission.classroom}</td><td width='50'>座位号</td><td>{$admission.seat}</td></tr>
 			  		</table>
 		  		</div>
 		  	</div>
@@ -77,19 +77,20 @@
 		  			<h3 style='text-align:center;margin:50px auto 20px'>考生须知</h3>
 		  			<div class='tip-content'>
 		  				<div>
-		  					1. 考生凭身份证和有效身份证件（身份证、军官证）进入试室，对号入座，
-		  					将准考证和有效身份证件放置在桌面右上角。考试开始30分钟后，考生不
-		  					得进入考场参加考试。开始开始60分钟内不得交卷退场。</div>
-		  				<div>	2. 禁止携带书籍、纸张、文件、笔记、涂改用品、报刊以及各种无效通讯工具（如寻呼机、移动电话和录像设备
-		  					）、电子记事本等与考试无关的物品。</div>
-		  				<div>	3. 考生入场后，应核对准考证上的信息与考试机显示的信息是否一致，如有误
-		  					请立即报告监考人员。</div>
-		  				<div>	4. 考试过程中，如出现考试机故障等问题应向监考人员举手报告。</div>
-		  				<div>	5. 考生必须自觉严格遵守考场纪律及相关规定，不得要求监考人员
-		  					及时试题，不许交头接耳、左顾右盼，禁止偷看、抄袭他人试题答案，
-		  					严禁冒名替考，考场内禁止吸烟。</div>
-		  				<div>	6. 考生在考试结束信号发出后应立停止答卷，人机对话考试系统会自动收卷。
-		  					提前交卷的考生应立即离场，不得再次进入考场或在附近逗留、谈论。</div>
+		  					1. 考生必须携带齐准考证、有效身份证,方可进入考场</div>
+		  				<div>	2. 考生自备橡皮、2B铅笔、黑色墨水笔。</div>
+		  				<div>	3. 移动电话（手机）、电子记事本等电子设备及考试的相关资料须按规定放在指定位置,严禁带至座位，一经发现，作违纪处理。
+						</div>
+		  				<div>	4. 考试前20分钟可进入考场,考试开始30分钟后,不得入场,开考60分钟后,方可交卷离场。</div>
+		  				<div>	5. 考生交卷时需将试卷、答题卡（答题纸）交监考人员检查验收同意并在交卷签名表上签字后方可离场,严禁将试卷（题本）、答题卡（答题纸）、草稿纸等带出考场。
+						</div>
+		  				<div>	6. 考生必须自觉严格遵守考场纪律及相关规定，不得要求监考人员提示试题，不许交头接耳、左顾右盼，禁止偷看、抄袭他人试题答案，严禁冒名替考，考场严禁吸烟。
+						</div>
+						<div>	7. 答题前请考生认真阅读试卷、答题卡（答题纸）上的答题注意事项。</div>
+						<div>   8. 考生应认真填写(涂)试卷（科目）代码和题本封面上的姓名、准考证号、单位等应试人员信息。考生填写(涂)答题信息、准考证号及试卷（科目）代码时,请使用2B铅笔,把对应的数字小框涂满涂黑,每一列对应一个数字。考生如未按要求填写（涂）或错填写（涂）准考证号及试卷（科目）代码的,该科目考试成绩按无效处理。</div>
+						<div>9. 考生在答题时需保持答题卡的整洁和完好,不要折叠和损坏,对已填涂的内容修改时,需用橡皮擦干净后再行填涂。</div>
+						<div>10. 考生携带的有效准考证应保证干净整洁,不能有任何标记或书写的文字等相关内容。</div>
+						<div>提示：考生应在考试前一天熟悉考场地址和交通路线，充分考虑乘车交通状况或住在考点考场旁边，避免耽误考试。</div>
 		  			</div>
 		  		</div>
 		  	</div>

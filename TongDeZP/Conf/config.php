@@ -11,13 +11,13 @@ return array(
     //'SHOW_PAGE_TRACE' =>true, // 显示页面Trace信息
     'URL_HTML_SUFFIX'=>'',
     'TMPL_PARSE_STRING' => array(
-        '__HTML__' => __ROOT__.'/TongDeZP/Tpl/html',
-        '__JS__' => __ROOT__.'/TongDeZP/Tpl/js',
-        '__CSS__' => __ROOT__.'/TongDeZP/Tpl/css',
-        '__IMG__' => __ROOT__.'/TongDeZP/Tpl/images',
-        '__URL__' =>__ROOT__.'/TongDeZP/index.php',
-        '__Tpl__' =>__ROOT__.'/TongDeZP/Tpl',
-        '__APP__'=>__ROOT__.'/TongDeZP'
+        '__HTML__' => __ROOT__.'/Tpl/html',
+        '__JS__' => __ROOT__.'/Tpl/js',
+        '__CSS__' => __ROOT__.'/Tpl/css',
+        '__IMG__' => __ROOT__.'/Tpl/images',
+        '__URL__' =>__ROOT__.'/index.php',
+        '__Tpl__' =>__ROOT__.'/Tpl',
+        '__APP__'=>__ROOT__.''
     ),
     'THINK_EMAIL' => array(
         'SMTP_HOST'   => 'smtp.sina.com', //SMTP服务器

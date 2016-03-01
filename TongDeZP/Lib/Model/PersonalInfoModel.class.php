@@ -30,11 +30,20 @@
                 $where['name'] = $key;
             }
             $where['status'] = 3;
-            $count = M('personal_information')->where($where)->count();
-            if(empty($pageIndex) || empty($pageSize)){
-                $data = M('personal_information')->where($where)->select();
+            $count = M('personal_information')->where($where)->count(1);
+            if(empty($pageSize)){
+                $data = M('personal_information pi')
+                    ->join('left join zhaopin on pi.zhaopin_id = zhaopin.id')
+                    ->field('pi.*,zhaopin.depart_code,test_subject')
+                    ->where($where)
+                    ->order('user_id')->select();
             }else{
-                $data = M('personal_information')->where($where)->page($pageIndex,$pageSize)->select();
+                $data = M('personal_information pi')
+                    ->join('left join zhaopin on pi.zhaopin_id = zhaopin.id')
+                    ->field('pi.*,zhaopin.depart_code,test_subject')
+                    ->where($where)
+                    ->page($pageIndex,$pageSize)
+                    ->order('user_id')->select();
             }
             for($i=0;$i<count($data);$i++){
                 $data[$i]['native_place'] = str_replace(array('直辖市','市辖区','|区|','|县|','|'),'',$data[$i]['native_place']);

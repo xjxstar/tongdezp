@@ -23,12 +23,14 @@ $(function(){
 			$.ajax({
 				url:'index.php/Login/login',
 				type:'post',
+				dataType:'json',
 				data:{username:username,pwd:pwd},
 				success:function(data){
-					if(data==1){
-						location.href = 'index.php/ResumeManage';
+					$('.oerror').remove();
+					if(data.status==0){
+						$('<span class="oerror">'+data.info+'</span>').appendTo($('#errorMsg'));
 					}else{
-						$('<span class="oerror">用户名或密码错误</span>').appendTo($('#errorMsg'));
+						location.href = 'index.php/ResumeManage';
 					}
 				}
 			})
@@ -38,10 +40,12 @@ $(function(){
 				type:'post',
 				data:{username:username,pwd:pwd},
 				success:function(data){
-					if(data=='1'){
+					$('.oerror').remove();
+					if(data.status==0){
+						$('<span class="oerror">'+data.info+'</span>').appendTo($('#errorMsg'));
 						location.href = 'index.php/Admin/home';
 					}else{
-						$('<span class="oerror">用户名或密码错误</span>').appendTo($('#errorMsg'));
+						location.href = 'index.php/Admin/home';
 					}
 				}
 			})

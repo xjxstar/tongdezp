@@ -2,7 +2,7 @@
     class AdmissionAction extends Action{
         public function getAdmission(){
             $roomId = isset($_REQUEST['room_id'])?$_REQUEST['room_id']:'';
-            $pageIndex = isset($_REQUEST['pageIndex'])?$_REQUEST['pageIndex']:'';
+            $pageIndex = isset($_REQUEST['pageIndex'])?$_REQUEST['pageIndex']+1:'';
             $pageSize = isset($_REQUEST['pageSize'])?$_REQUEST['pageSize']:'';
             $key = isset($_REQUEST['key'])?$_REQUEST['key']:'';
             $data = D('Admission')->getAdmission($pageIndex,$pageSize,$key,$roomId);
@@ -55,6 +55,7 @@
             $remark = M('personal_information')->where($where)->getField('remark');
             $seat = M('admission')->where($where)->getField('seat');
             if(!empty($seat) && $status==4){
+                resumeLog($userId,'MAKE_ADMISSION');
                 exit('1');
             }else if($status==2){
                 $status = statusToString($status,$remark);
@@ -97,5 +98,32 @@
             }else{
                 exit(json_encode($grade));
             }
+        }
+        public function downloadGradeTpl(){
+            $fileName = "考试人员信息上传模板文件.xls";
+            $filePath = 'upload/template/gradeTemplate.xls';
+            D('Common')->downloadTpl($fileName,$filePath);
+        }
+
+        public function exportGrade(){
+            $data = D('Common')->importExcel($_FILES['gradeExcel']['tmp_name']);
+            $data = $data['data'][0]['Content'];
+            $startRow = 2;//成绩信息起始行号为2
+            for($i=$startRow;$i<=count($data);$i++){
+                $admission = $data[$i][0];
+                $grade = intval($data[$i][1]);
+                $interview_grade = intval($data[$i][2]);
+                if(!$admission){
+                    break;
+                }
+                if( !$grade || !$interview_grade){
+                    exit("第{$i}行数据有误，请修改后重新导入");
+                }
+                $res = M('admission')->where('admission_no='.$admission)->save(array('grade'=>$grade,'interview_grade'=>$interview_grade));
+                if($res===false){
+                    exit('导入失败，请重新导入');
+                }
+            }
+            exit("1");
         }
     }
